@@ -20,19 +20,19 @@ The algorithm that we are going to use:
 1. Merge sort 
 
 ```
-function parallelMergeSort(arr, p, r, numThreads)
-  if p < r then
-    q = floor((p + r) / 2)
-    if numThreads > 1 then
-      leftThread = spawn parallelMergeSort(arr, p, q, numThreads / 2)
-      rightThread = spawn parallelMergeSort(arr, q + 1, r, numThreads / 2)
-      sync leftThread
-      sync rightThread
-    else
-      parallelMergeSort(arr, p, q, 1)
-      parallelMergeSort(arr, q + 1, r, 1)
-    merge(arr, p, q, r)
+function parallelMergeSort(array):
+  if parent:
+    localArray = array
+    for num processes:
+      recieve(newArray)
+      merge(localArray, newArray)
+      return localArray
+  else:
+    localArray = array
+    send(localArray)
 ```
+https://rachitvasudeva.medium.com/parallel-merge-sort-algorithm-e8175ab60e7
+https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
 
 2. Bitonic sort
 
