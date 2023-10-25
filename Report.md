@@ -6,23 +6,24 @@
 3. Jacob Thomas
 4. Ashwin Kundenti
 
-The way our team is communicating is by using Discording and Imessages
+The way our team is communicating is by using Discord and iMessages
 ---
 
 ## 2. _due 10/25_ Project topic
 For our project topic, we are going to be exploring parellel algoithm for sorting.
 ## 2. _due 10/25_ Brief project description (what algorithms will you be comparing and on what architectures)
 
-Sources for the code and all 
+Sources for the code and algorit
 
 The algorithm that we are going to use:
 
 1. Merge sort 
 
-2. Radix sort
+2. Bitonic sort
 
 3. Quicksort
 
+The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
 <!-- 
 For example:
 - Algorithm 1a (MPI + CUDA)
