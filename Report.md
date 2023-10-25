@@ -17,9 +17,9 @@ Sources for the code and all
 
 The algorithm that we are going to use:
 
-1. Selection sort 
+1. Merge sort 
 
-2. Insertion sort
+2. Radix sort
 
 3. Quicksort
 
