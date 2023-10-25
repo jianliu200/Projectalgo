@@ -20,7 +20,18 @@ The algorithm that we are going to use:
 1. Merge sort 
 
 ```
-hello
+function parallelMergeSort(arr, p, r, numThreads)
+  if p < r then
+    q = floor((p + r) / 2)
+    if numThreads > 1 then
+      leftThread = spawn parallelMergeSort(arr, p, q, numThreads / 2)
+      rightThread = spawn parallelMergeSort(arr, q + 1, r, numThreads / 2)
+      sync leftThread
+      sync rightThread
+    else
+      parallelMergeSort(arr, p, q, 1)
+      parallelMergeSort(arr, q + 1, r, 1)
+    merge(arr, p, q, r)
 ```
 
 2. Bitonic sort
