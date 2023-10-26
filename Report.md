@@ -13,7 +13,7 @@ The way our team is communicating is by using Discord and iMessages
 For our project topic, we are going to be exploring parellel algoithm for sorting.
 ## 2. _due 10/25_ Brief project description (what algorithms will you be comparing and on what architectures)
 
-Sources for the code and algorit
+Sources for the code and algorithm: 
 
 The algorithm that we are going to use:
 
