@@ -13,8 +13,6 @@ The way our team is communicating is by using Discord and iMessages
 For our project topic, we are going to be exploring parellel algoithm for sorting.
 ## 2. _due 10/25_ Brief project description (what algorithms will you be comparing and on what architectures)
 
-Sources for the code and algorit
-
 The algorithm that we are going to use:
 
 1. Merge sort 
@@ -63,6 +61,9 @@ procedure BUILD TREE (A[1...n])
     end repeat 
 end BUILD_TREE 
 ```
+http://users.atw.hu/parallelcomp/ch09lev1sec4.html
+
+
 The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
 <!-- 
 For example:
