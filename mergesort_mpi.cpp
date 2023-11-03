@@ -55,28 +55,49 @@ void mergesort(int array[], int l, int r){
     }
 }
 
+void parallel_mergesort(int arr[], int size, int taskid, int numtasks) {
+    int local_size = size / numtasks;
+    int local_arr[local_size];
+    MPI_Scatter(arr, local_size, MPI_INT, local_arr, local_size, MPI_INT, 0, MPI_COMM_WORLD);
+    mergesort(local_arr, 0, local_size - 1);
+    MPI_Gather(local_arr, local_size, MPI_INT, arr, local_size, MPI_INT, 0, MPI_COMM_WORLD);
+    if (taskid == 0) {
+        mergesort(arr, 0, size - 1);
+    }
+}
+
 
 int main(int argc, char** argv){
-    // MPI_INIT(&argc, &argv);
-    // int taskid, numtasks;
-    int arr[6] = {12, 11, 13, 5, 6, 7};
-    // MPI_COMM_rank(MPI_COMM_WORLD, &taskid);
-    // MPI_COMM_size(MPI_COMM_WORLD, &numtasks);
-    // if(numtasks<2){
-    //     printf("Need at least two MPI tasks. Quitting...\n");
-    //     MPI_Abort(MPI_COMM_WORLD, rc);
-    //     exit(1);
-    // }
+    int rc = 0;
+    MPI_INIT(&argc, &argv);
+    int taskid, numtasks;
+    MPI_COMM_rank(MPI_COMM_WORLD, &taskid);
+    MPI_COMM_size(MPI_COMM_WORLD, &numtasks);
+    if(numtasks<2){
+        printf("Need at least two MPI tasks. Quitting...\n");
+        MPI_Abort(MPI_COMM_WORLD, rc);
+        exit(1);
+    }
     
-    // if(rank ==0){
-    //     int arr[6] = {12, 11, 13, 5, 6, 7};
-    // }
+    if(argc != 2){
+        printf("Usage: %s <array size>\n", argv[0]);
+        MPI_Abort(MPI_COMM_WORLD, rc);
+        exit(1);
+    }
+
+    int array_size = atoi(argv[1]);
+    int arr[array_size];
+    if(taskid == 0){
+        for(int i = 0; i < array_size; i++){
+            arr[i] = rand()%100;
+        }
+    }
     
 
-    mergesort(arr, 0, arr.size()-1);
+    parallel_mergesort(arr, 0, arr.size()-1);
 
 
-
+    MPI_Finalize();
 
 
     return 0;
