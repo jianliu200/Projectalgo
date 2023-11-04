@@ -8,6 +8,9 @@
 #include <adiak.hpp>
 
 
+// source: https://www.geeksforgeeks.org/merge-sort/
+// source: https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/
+
 void merge(int arr[], int l, int m, int r){
     int first =  m-l+1;
     int second = r-m;
