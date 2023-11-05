@@ -9,6 +9,10 @@
 #include <time.h>
 #include <string.h>
 
+#include <caliper/cali.h>
+#include <caliper/cali-manager.h>
+#include <adiak.hpp>
+
 // global constants definitions
 #define b 32           // number of bits for integer
 #define g 8            // group of bits for each scan
@@ -32,7 +36,7 @@ struct list {
 int add_item(List* list, int item) {
   if (list->length >= list->capacity) {
     size_t new_capacity = list->capacity*2;
-    int* temp = realloc(list->array, new_capacity*sizeof(int));
+    int* temp = (int*)realloc(list->array, new_capacity*sizeof(int));
     if (!temp) {
       printf("ERROR: Could not realloc for size %d!\n", (int) new_capacity); 
       return 0;
@@ -44,34 +48,6 @@ int add_item(List* list, int item) {
   list->array[list->length++] = item;
 
   return 1;
-}
-
-// print resulting array while gathering information from all processes
-void print_array(const int P, const int rank, int *a, int *n) {
-  if (rank == 0) {
-    // print array for rank 0 first
-    for (int i = 0; i < n[rank]; i++) {
-      printf("%d\n", a[i]);
-    } 
-    // then receive and print from others
-    for (int p = 1; p < P; p++) {
-      MPI_Status stat;
-      int a_size = n[p];
-      int buff[a_size];
-      MPI_Recv(buff, a_size, MPI_INT, p, PRINT_TAG_NUM, MPI_COMM_WORLD, &stat);
-      for (int i = 0; i < a_size; i++) {
-        printf("%d\n", buff[i]);
-      } 
-    }
-  } else {
-    // if not rank 0, send your data to other processes
-    MPI_Send(a, n[rank], MPI_INT, 0, PRINT_TAG_NUM, MPI_COMM_WORLD); 
-  }
-}
-
-// Initialize array with numbers read from a file
-int init_array(char* file, const int begin, const int n, int *a) {
-  // write this function
 }
 
 // Compute j bits which appear k bits from the right in x
@@ -161,7 +137,7 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
 
     // reallocate array if newly calculated size is larger
     if (new_size > *n) {
-      int* temp = realloc(a, new_size*sizeof(int));
+      int* temp = (int*)realloc(a, new_size*sizeof(int));
       if (!a) {
         if (rank == 0) {
           printf("ERROR: Could not realloc for size %d!\n", new_size); 
@@ -225,23 +201,25 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
   return a;
 }
 
-
 void usage(char* message) {
   fprintf(stderr, "Incorrect usage! %s\n", message);
-  fprintf(stderr, "Usage: sbatch radix.grace_job  <elements> <processes>\n");
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+  CALI_CXX_MARK_FUNCTION;
+
+  const char* data_init = "data_init";
+
+  cali::ConfigManager mgr;
+  mgr.start();
+
   int rank, size;
-  int print_results = 0;
 
   // initialize MPI environment and obtain basic info
   MPI_Init(&argc, &argv);
 
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
-
 
   // initialize vars and allocate memory
   int n_total = atoi(argv[1]);
@@ -273,29 +251,27 @@ int main(int argc, char** argv)
   }
 
   const int s = n * rank;
-  int* a = malloc(sizeof(int) * n);
+  int* a = (int*)malloc(sizeof(int) * n);
 
   int b_capacity = n / B;
   if (b_capacity < B) {
     b_capacity = B;
   }
-  List* buckets = malloc(B*sizeof(List));
+  List* buckets = (List*)malloc(B*sizeof(List));
   for (int j = 0; j < B; j++) {
-    buckets[j].array = malloc(b_capacity*sizeof(int));
+    buckets[j].array = (int*)malloc(b_capacity*sizeof(int));
     buckets[j].capacity = B;
   }
 
   // initialize local array
-  init_array(argv[1], s, n, &a[0])
+  CALI_MARK_BEGIN(data_init);
+  for (int i = 0; i < n; ++i) {
+    a[i] = rand() % 1000;
+  }
+  CALI_MARK_END(data_init);
 
   // let all processes get here
   MPI_Barrier(MPI_COMM_WORLD);
-
-  // take a timestamp before the sort starts
-  timestamp_type time1, time2;
-  if (rank == 0) {
-    get_timestamp(&time1);
-  }
 
   // then run the sorting algorithm
   a = radix_sort(&a[0], buckets, size, rank, &n);
@@ -305,63 +281,28 @@ int main(int argc, char** argv)
     MPI_Finalize();
     return EXIT_FAILURE;
   }
- 
+
   // wait for all processes to finish before printing results 
   MPI_Barrier(MPI_COMM_WORLD);
 
-  // take a timestamp after the process finished sorting
-  if (rank == 0) {
-    get_timestamp(&time2);
+  adiak::init(NULL);
+  adiak::launchdate();    // launch date of the job
+  adiak::libraries();     // Libraries used
+  adiak::cmdline();       // Command line used to launch the job
+  adiak::clustername();   // Name of the cluster
+  adiak::value("Algorithm", "RadixSort"); // The name of the algorithm you are using (e.g., "MergeSort", "BitonicSort")
+  adiak::value("ProgrammingModel", "MPI"); // e.g., "MPI", "CUDA", "MPIwithCUDA"
+  adiak::value("Datatype", "int"); // The datatype of input elements (e.g., double, int, float)
+  adiak::value("SizeOfDatatype", sizeof(int)); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
+  adiak::value("InputSize", n_total); // The number of elements in input dataset (1000)
+  adiak::value("InputType", "Random"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
+  adiak::value("num_procs", size);
+  adiak::value("implementation_source", "Online (https://github.com/ym720/p_radix_sort_mpi/blob/master)"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
-    // calculate fish updates per second
-    double elapsed = timestamp_diff_in_seconds(time1,time2);
-    printf("%f s\n", elapsed);
-    printf("%d elements sorted\n", n_total);
-    printf("%f elements/s\n", n_total / elapsed);
-  }
-
-  // store number of items per each process after the sort
-  int* p_n = malloc(size*sizeof(int));
-
-  // first store our own number
-  p_n[rank] = n;
-
-  // communicate number of items among other processes
-  MPI_Request req;
-  MPI_Status stat;
-
-  for (int i = 0; i < size; i++) {
-    if (i != rank) {
-      MPI_Isend(
-          &n,
-          1,
-          MPI_INT,
-          i,
-          NUM_TAG,
-          MPI_COMM_WORLD,
-          &req);
-    }
-  }
-
-  for (int i = 0; i < size; i++) {
-    if (i != rank) {
-      MPI_Recv(
-         &p_n[i],
-         1,
-         MPI_INT,
-         i,
-         NUM_TAG,
-         MPI_COMM_WORLD,
-         &stat);
-    }
-  }
   
-  // print results
-  if (print_results) {
-    print_array(size, rank, &a[0], p_n);
-  }
-
   // release MPI resources
+  mgr.stop();
+  mgr.flush();
   MPI_Finalize();
 
   // release memory allocated resources
@@ -370,7 +311,6 @@ int main(int argc, char** argv)
   }
   free(buckets);
   free(a);
-  free(p_n);
 
   return 0;
 }
