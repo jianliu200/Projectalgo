@@ -1,8 +1,4 @@
 /**
- * Adapted from https://github.com/ym720/p_radix_sort_mpi/blob/master
- */
-
-/**
  * Parallel implementation of radix sort. The list to be sorted is split
  * across multiple MPI processes and each sub-list is sorted during each
  * pass as in straight radix sort. 
@@ -50,39 +46,32 @@ int add_item(List* list, int item) {
   return 1;
 }
 
-void usage(char* message) {
-  fprintf(stderr, "Incorrect usage! %s\n", message);
-  fprintf(stderr, "Usage: mpiexec -n [processes] p_radix_sort [f] [n] [r]\n");
-  fprintf(stderr, "  [processes] - number of processes to use\n");
-  fprintf(stderr, "  [f] - input file to be sorted\n");
-  fprintf(stderr, "  [n] - number of elements in the file\n");
-  fprintf(stderr, "  [r] - print sorted results 0/1, 0 by default\n");
+// print resulting array while gathering information from all processes
+void print_array(const int P, const int rank, int *a, int *n) {
+  if (rank == 0) {
+    // print array for rank 0 first
+    for (int i = 0; i < n[rank]; i++) {
+      printf("%d\n", a[i]);
+    } 
+    // then receive and print from others
+    for (int p = 1; p < P; p++) {
+      MPI_Status stat;
+      int a_size = n[p];
+      int buff[a_size];
+      MPI_Recv(buff, a_size, MPI_INT, p, PRINT_TAG_NUM, MPI_COMM_WORLD, &stat);
+      for (int i = 0; i < a_size; i++) {
+        printf("%d\n", buff[i]);
+      } 
+    }
+  } else {
+    // if not rank 0, send your data to other processes
+    MPI_Send(a, n[rank], MPI_INT, 0, PRINT_TAG_NUM, MPI_COMM_WORLD); 
+  }
 }
 
 // Initialize array with numbers read from a file
 int init_array(char* file, const int begin, const int n, int *a) {
-
-  // open file in read-only mode and check for errors
-  FILE *file_ptr;
-  file_ptr = fopen(file, "r");
-  if (file_ptr == NULL) {
-    return EXIT_FAILURE;
-  }
-
-  // read n numbers from a file into array a starting at begin position
-  int skip;
-
-  // first skip to the begin position
-  for (int i = 0; i < begin; i++) {
-    int s = fscanf(file_ptr, "%d", &skip); 
-  }
-
-  // then read numbers into array a
-  for (int i = 0; i < n; i++) {
-    int s = fscanf(file_ptr, "%d", &a[i]);
-  }
-
-  return EXIT_SUCCESS;
+  // write this function
 }
 
 // Compute j bits which appear k bits from the right in x
@@ -236,6 +225,12 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
   return a;
 }
 
+
+void usage(char* message) {
+  fprintf(stderr, "Incorrect usage! %s\n", message);
+  fprintf(stderr, "Usage: sbatch radix.grace_job  <elements> <processes>\n");
+}
+
 int main(int argc, char** argv)
 {
   int rank, size;
@@ -247,18 +242,9 @@ int main(int argc, char** argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  // check for correct number of arguments
-  if (argc < 3)
-  {
-    if (rank == 0) usage("Not enough arguments!");
-    MPI_Finalize();
-    return EXIT_FAILURE;
-  } else if (argc > 3) {
-    print_results = atoi(argv[3]);
-  }
 
   // initialize vars and allocate memory
-  int n_total = atoi(argv[2]);
+  int n_total = atoi(argv[1]);
   int n = n_total/size;
   if (n < 1) {
     if (rank == 0) {
@@ -300,11 +286,7 @@ int main(int argc, char** argv)
   }
 
   // initialize local array
-  if (init_array(argv[1], s, n, &a[0]) != EXIT_SUCCESS) {
-    printf("File %s could not be opened!\n", argv[1]);
-    MPI_Finalize();
-    return EXIT_FAILURE;
-  }
+  init_array(argv[1], s, n, &a[0])
 
   // let all processes get here
   MPI_Barrier(MPI_COMM_WORLD);
