@@ -295,7 +295,6 @@ int main(int argc, char** argv) {
     for (int i = 0; i < n_total - 1; ++i) {
       if (a[i] > a[i + 1]) {
         printf("ERROR: Incorrectly sorted ...\n");
-        printf("a[%d] = %d, a[%d] = %d\n", i, a[i], i+1, a[i+1]);
         MPI_Finalize();
         return EXIT_FAILURE;
       }
