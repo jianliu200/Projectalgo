@@ -219,7 +219,7 @@ int main(int argc, char** argv) {
 	MPI_Finalize();
     CALI_MARK_END(comm);
 
-    CALI_MARK_END(main_loop)
+    
 
 
     adiak::init(NULL);
@@ -239,7 +239,7 @@ int main(int argc, char** argv) {
     //adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
     adiak::value("implementation_source", "Online") // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
-
+	CALI_MARK_END(main_loop);
 	
 }
 
