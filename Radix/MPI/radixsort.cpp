@@ -209,6 +209,9 @@ int main(int argc, char** argv) {
   CALI_CXX_MARK_FUNCTION;
 
   const char* data_init = "data_init";
+  const char* correctness_check = "correctness_check";
+  const char* comp = "comp";
+
 
   cali::ConfigManager mgr;
   mgr.start();
@@ -274,7 +277,9 @@ int main(int argc, char** argv) {
   MPI_Barrier(MPI_COMM_WORLD);
 
   // then run the sorting algorithm
+  CALI_MARK_BEGIN(comp);
   a = radix_sort(&a[0], buckets, size, rank, &n);
+  CALI_MARK_END(comp);
 
   if (a == NULL) {
     printf("ERROR: Sort failed, exiting ...\n");
@@ -284,6 +289,20 @@ int main(int argc, char** argv) {
 
   // wait for all processes to finish before printing results 
   MPI_Barrier(MPI_COMM_WORLD);
+
+  if(rank == 0) {
+    CALI_MARK_BEGIN(correctness_check);
+    for (int i = 0; i < n_total - 1; ++i) {
+      if (a[i] > a[i + 1]) {
+        printf("ERROR: Incorrectly sorted ...\n");
+        printf("a[%d] = %d, a[%d] = %d\n", i, a[i], i+1, a[i+1]);
+        MPI_Finalize();
+        return EXIT_FAILURE;
+      }
+    }
+    printf("Final List Sorted Correctly!\n");
+    CALI_MARK_END(correctness_check);
+  }
 
   adiak::init(NULL);
   adiak::launchdate();    // launch date of the job
