@@ -22,6 +22,6 @@ processes=$2
 module load intel/2020b       # load Intel software stack
 module load CMake/3.12.1
 
-CALI_CONFIG="spot(output=${processes}procs-${elements}elements-radixsort.cali, \
+CALI_CONFIG="spot(output=${processes}procs-${elements}elements-radixsort-mpi.cali, \
     time.variance)" \
 mpirun -np $processes ./radixsort $elements

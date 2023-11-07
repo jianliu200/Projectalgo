@@ -27,6 +27,6 @@ module load intel/2020b
 module load GCCcore/7.3.0
 #
 
-CALI_CONFIG="spot(output=t${num_threads}-v${num_vals}.cali), \
+CALI_CONFIG="spot(output=t${num_threads}-v${num_vals}-radixsort-cuda.cali), \
     cuda.gputime" \
-./bitonic $num_threads $num_vals
+./radixsort $num_threads $num_vals
