@@ -10,7 +10,7 @@
 
 // helper for main()
 
-// source: https://github.com/kevin-albert/cuda-mergesort/blob/master/mergesort.
+// source: https://github.com/kevin-albert/cuda-mergesort/blob/master/mergesort.cu
 // author: kevin-albert
 // I am using this source code for CUDA implementation of merge sort. I have added caliper and adiak annotations to the code.
 
@@ -51,6 +51,9 @@ const char* correctness = "correctness";
 
 bool verbose = true;
 int main(int argc, char** argv) {
+    CALI_CXX_MARK_FUNCTION;
+    cali::ConfigManager mgr;
+	mgr.start();
     CALI_MARK_BEGIN(main_loop);
     
 
@@ -183,6 +186,8 @@ int main(int argc, char** argv) {
     }
 
     CALI_MARK_END(main_loop);
+    mgr.stop();
+   	mgr.flush();
 
     adiak::init(NULL);
     adiak::launchdate();    // launch date of the job
@@ -199,7 +204,7 @@ int main(int argc, char** argv) {
     adiak::value("num_threads", threadsPerBlock.x); // The number of CUDA or OpenMP threads
     adiak::value("num_blocks", blocksPerGrid.x); // The number of CUDA blocks 
     adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
-    adiak::value("implementation_source", "Online: https://github.com/kevin-albert/cuda-mergesort/blob/master/mergesort"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
+    adiak::value("implementation_source", "Online: https://github.com/kevin-albert/cuda-mergesort/blob/master/mergesort.cu"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
 }
 

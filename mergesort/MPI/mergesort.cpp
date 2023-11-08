@@ -25,8 +25,10 @@ const char* MPIgather = "MPIgather";
 const char* data_init = "data_init";
 const char* correctness = "correctness";
 int main(int argc, char** argv) {
-	
+	CALI_CXX_MARK_FUNCTION;
 	/********** Create and populate the array **********/
+	cali::ConfigManager mgr;
+	mgr.start();
     CALI_MARK_BEGIN(main_loop);
 	int n = atoi(argv[1]);
 	int *original_array = (int*)malloc(n * sizeof(int));
@@ -133,6 +135,10 @@ int main(int argc, char** argv) {
     CALI_MARK_BEGIN(MPIbarrier);
 	MPI_Barrier(MPI_COMM_WORLD);
     CALI_MARK_END(MPIbarrier);
+	CALI_MARK_END(main_loop);
+	mgr.stop();
+   	mgr.flush();
+
 	MPI_Finalize();
     
 
@@ -156,7 +162,7 @@ int main(int argc, char** argv) {
     adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
     adiak::value("implementation_source", "Online: https://github.com/racorretjer/Parallel-Merge-Sort-with-MPI/blob/master/merge-mpi.c"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
-	CALI_MARK_END(main_loop);	
+		
 	
 }
 
