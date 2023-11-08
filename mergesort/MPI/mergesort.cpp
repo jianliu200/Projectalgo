@@ -1,113 +1,6 @@
-// #include "mpi.h"
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <limits.h>
-
-// #include <caliper/cali.h>
-// #include <caliper/cali-manager.h>
-// #include <adiak.hpp>
-
-
-// // source: https://www.geeksforgeeks.org/merge-sort/
-// // source: https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/
-
-// void merge(int arr[], int l, int m, int r){
-//     int first =  m-l+1;
-//     int second = r-m;
-//     int array1[first], array2[second];
-//     for (int i = 0; i < first; i++){
-//         array1[i] = arr[l+i];
-//     }
-//     for(int j = 0; j < second; j++){
-//         array2[j] = arr[m+1+j];
-//     }
-//     int left = 0;
-//     int right = 0;
-//     int k = l;
-//     while(left < first && right < second){
-//         if(array1[left] <= array2[right]){
-//             arr[k] = array1[left];
-//             left++;
-//         }
-//         else{
-//             arr[k] = array2[right];
-//             right++;
-//         }
-//         k++;
-//     }
-
-//     while(left < first){
-//         arr[k] = array1[left];
-//         left++;
-//         k++;
-//     }
-//     while(right < second){
-//         arr[k] = array2[right];
-//         right++;
-//         k++;
-//     }
-// }
-
-// void mergesort(int array[], int l, int r){
-//     if(l<r){
-//         int m = l+(r-l)/2;
-//         mergesort(array, l, m);
-//         mergesort(array, m+1, r);
-
-//         merge(array,l,m,r);
-//     }
-// }
-
-// void parallel_mergesort(int arr[], int size, int taskid, int numtasks) {
-//     int local_size = size / numtasks;
-//     int local_arr[local_size];
-//     MPI_Scatter(arr, local_size, MPI_INT, local_arr, local_size, MPI_INT, 0, MPI_COMM_WORLD);
-//     mergesort(local_arr, 0, local_size - 1);
-//     MPI_Gather(local_arr, local_size, MPI_INT, arr, local_size, MPI_INT, 0, MPI_COMM_WORLD);
-//     if (taskid == 0) {
-//         mergesort(arr, 0, size - 1);
-//     }
-// }
-
-
-// int main(int argc, char** argv){
-//     int rc = 0;
-//     MPI_INIT(&argc, &argv);
-//     int taskid, numtasks;
-//     MPI_COMM_rank(MPI_COMM_WORLD, &taskid);
-//     MPI_COMM_size(MPI_COMM_WORLD, &numtasks);
-//     if(numtasks<2){
-//         printf("Need at least two MPI tasks. Quitting...\n");
-//         MPI_Abort(MPI_COMM_WORLD, rc);
-//         exit(1);
-//     }
-    
-//     if(argc != 2){
-//         printf("Usage: %s <array size>\n", argv[0]);
-//         MPI_Abort(MPI_COMM_WORLD, rc);
-//         exit(1);
-//     }
-
-//     int array_size = atoi(argv[1]);
-//     int arr[array_size];
-//     if(taskid == 0){
-//         for(int i = 0; i < array_size; i++){
-//             arr[i] = rand()%100;
-//         }
-//     }
-    
-
-//     parallel_mergesort(arr, 0, arr.size()-1);
-
-
-//     MPI_Finalize();
-
-
-//     return 0;
-// }
-
 // source: https://github.com/racorretjer/Parallel-Merge-Sort-with-MPI/blob/master/merge-mpi.c
 // author: racorretjer
+// I am using this source code for MPI implementation of merge sort. I have added caliper and adiak annotations to the code.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -124,17 +17,19 @@ void mergeSort(int *, int *, int, int);
 const char* main_loop = "main loop";
 const char* comm =  "comm";
 const char* comm_large = "comm_large";
-const char* barrier = "barrier";
-const char* scatter = "scatter";
-const char* gather = "gather";
+const char* comp = "comp";
+const char* comp_large = "comp_large";
+const char* MPIbarrier = "MPIbarrier";
+const char* MPIscatter = "MPIscatter";
+const char* MPIgather = "MPIgather";
 const char* data_init = "data_init";
-
+const char* correctness = "correctness";
 int main(int argc, char** argv) {
 	
 	/********** Create and populate the array **********/
     CALI_MARK_BEGIN(main_loop);
 	int n = atoi(argv[1]);
-	int *original_array = malloc(n * sizeof(int));
+	int *original_array = (int*)malloc(n * sizeof(int));
 	
 	int c;
 	srand(time(NULL));
@@ -154,8 +49,8 @@ int main(int argc, char** argv) {
 	int world_rank;
 	int world_size;
 	
-	MPI_INIT(&argc, &argv);
-    CALI_MARK_BEGIN(comm);
+	MPI_Init(&argc, &argv);
+
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 		
@@ -163,31 +58,36 @@ int main(int argc, char** argv) {
 	int size = n/world_size;
 	
 	/********** Send each subarray to each process **********/
-	int *sub_array = malloc(size * sizeof(int));
+	int *sub_array = (int*)malloc(size * sizeof(int));
+	CALI_MARK_BEGIN(comm);
     CALI_MARK_BEGIN(comm_large);
-    CALI_MARK_BEGIN(scatter);
+    CALI_MARK_BEGIN(MPIscatter);
 	MPI_Scatter(original_array, size, MPI_INT, sub_array, size, MPI_INT, 0, MPI_COMM_WORLD);
-	CALI_MARK_END(scatter);
+	CALI_MARK_END(MPIscatter);
 	/********** Perform the mergesort on each process **********/
-	int *tmp_array = malloc(size * sizeof(int));
+	int *tmp_array = (int*)malloc(size * sizeof(int));
+	CALI_MARK_BEGIN(comp);
+	CALI_MARK_BEGIN(comp_large);
 	mergeSort(sub_array, tmp_array, 0, (size - 1));
-	
+	CALI_MARK_END(comp_large);
+	CALI_MAKR_END(comp);
 	/********** Gather the sorted subarrays into one **********/
 	int *sorted = NULL;
 	if(world_rank == 0) {
 		
-		sorted = malloc(n * sizeof(int));
+		sorted = (int*)malloc(n * sizeof(int));
 		
 		}
-	CALI_MARK_BEGIN(gather);
+	CALI_MARK_BEGIN(MPIgather);
 	MPI_Gather(sub_array, size, MPI_INT, sorted, size, MPI_INT, 0, MPI_COMM_WORLD);
-    CALI_MARK_END(gather);
+    CALI_MARK_END(MPIgather);
     CALI_MARK_END(comm_large);
+	CALI_MARK_END(comm);
 	
 	/********** Make the final mergeSort call **********/
 	if(world_rank == 0) {
 		
-		int *other_array = malloc(n * sizeof(int));
+		int *other_array = (int*)malloc(n * sizeof(int));
 		mergeSort(sorted, other_array, 0, (n - 1));
 		
 		/********** Display the sorted array **********/
@@ -197,7 +97,24 @@ int main(int argc, char** argv) {
 			printf("%d ", sorted[c]);
 			
 			}
-			
+		
+		CALI_MARK_BEGIN(correctness);
+		bool sorting = std::is_sorted(sorted, sorted + n);
+		CALI_MARK_END(correctness);
+		if(sorting == true) {
+			printf("\n");
+			printf("\n");
+			printf("The array is sorted");
+			printf("\n");
+			printf("\n");
+		}
+		else {
+			printf("\n");
+			printf("\n");
+			printf("The array is not sorted");
+			printf("\n");
+			printf("\n");
+		}
 		printf("\n");
 		printf("\n");
 			
@@ -213,11 +130,11 @@ int main(int argc, char** argv) {
 	free(tmp_array);
 	
 	/********** Finalize MPI **********/
-    CALI_MARK_BEGIN(barrier);
+    CALI_MARK_BEGIN(MPIbarrier);
 	MPI_Barrier(MPI_COMM_WORLD);
-    CALI_MARK_END(barrier);
+    CALI_MARK_END(MPIbarrier);
 	MPI_Finalize();
-    CALI_MARK_END(comm);
+    
 
     
 
@@ -236,10 +153,10 @@ int main(int argc, char** argv) {
     adiak::value("num_procs", world_size); // The number of processors (MPI ranks)
     // adiak::value("num_threads", num_threads); // The number of CUDA or OpenMP threads
     // adiak::value("num_blocks", num_blocks); // The number of CUDA blocks 
-    //adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
-    adiak::value("implementation_source", "Online") // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
+    adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
+    adiak::value("implementation_source", "Online: https://github.com/racorretjer/Parallel-Merge-Sort-with-MPI/blob/master/merge-mpi.c"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
-	CALI_MARK_END(main_loop);
+	CALI_MARK_END(main_loop);	
 	
 }
 
