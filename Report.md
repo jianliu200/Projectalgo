@@ -122,6 +122,7 @@ Main (MPI):
 End
 ```
 source 1: https://www.baeldung.com/cs/bitonic-sort
+
 source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 3. Quicksort
@@ -151,11 +152,61 @@ procedure BUILD TREE (A[1...n])
     end repeat 
 end BUILD_TREE 
 
-Radix Sort
-
-
 ```
+
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
+
+4. Radix Sort:
+'''
+Pseudocode:
+Radix-Sort (MPI, A, d):
+    // It works similarly to Counting Sort for d number of passes.
+    // Each key in A[1..n] is a d-digit integer.
+    // Digits are numbered 1 to d from right to left.
+
+    Initialize MPI
+
+    Get numTasks and rank
+
+    for j = 1 to d do
+        // Local counts for each process
+        int local_count[10] = {0}
+
+        // Count the number of keys at each digit place (pass j)
+        for i = 0 to n do
+            local_count[key_of(A[i], j)]++
+
+        // Gather local counts to rank 0
+        MPI_Gather(local_count, 10, MPI_INT, global_count, 10, MPI_INT, 0, MPI_COMM_WORLD)
+
+        if rank == 0:
+            // Calculate cumulative counts
+            for k = 1 to 10 do
+                global_count[k] = global_count[k] + global_count[k-1]
+
+        // Broadcast global counts to all processes
+        MPI_Bcast(global_count, 10, MPI_INT, 0, MPI_COMM_WORLD)
+
+        // Initialize result array
+        int result[n]
+
+        // Build the resulting array by checking the new position of A[i] using count
+        for i = n-1 downto 0 do
+            result[global_count[key_of(A[i], j)]] = A[i]
+            global_count[key_of(A[i], j)]--
+
+        // Update A with the sorted result
+        for i = 0 to n do
+            A[i] = result[i]
+
+    end for (j)
+
+    MPI_Finalize() // Finalize MPI
+End
+'''
+Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
+
+Source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 ### 2c. Evaluation plan - what and how will you measure and compare
 
