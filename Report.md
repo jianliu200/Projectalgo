@@ -220,16 +220,14 @@ __global__ void cuda_quicksort_kernel(int* A, int n)
 
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
 
-4. Radix Sort:
-'''
-Pseudocode:
+4. Radix Sort
+```
 Radix-Sort (MPI, A, d):
     // It works similarly to Counting Sort for d number of passes.
     // Each key in A[1..n] is a d-digit integer.
     // Digits are numbered 1 to d from right to left.
 
     Initialize MPI
-
     Get numTasks and rank
 
     for j = 1 to d do
@@ -267,10 +265,67 @@ Radix-Sort (MPI, A, d):
 
     MPI_Finalize() // Finalize MPI
 End
-'''
-Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
+```
+CUDA
+```
+Define constants:
+    WSIZE = 32
+    LOOPS = 1
+    UPPER_BIT = 10
+    LOWER_BIT = 0
 
-Source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
+Declare global device array ddata[WSIZE]
+
+Define kernel function parallelRadix():
+    Declare shared volatile array sdata[WSIZE * 2]
+    Declare unsigned integer bitmask, offset, thrmask, mypos
+
+    Load ddata[threadIdx.x] into sdata[threadIdx.x]
+
+    For each bit position from LOWER_BIT to UPPER_BIT:
+        Get mydata from sdata[((WSIZE - 1) - threadIdx.x) + offset]
+        Extract mybit using bitmask from mydata
+
+        Get ones and zeroes count using __ballot()
+
+        Switch ping-pong buffers
+        Do zeroes and ones:
+            If mybit is zero:
+                Calculate my position in the ping-pong buffer for zeroes
+            Else:
+                Calculate my position in the ping-pong buffer for ones
+
+        Move mydata to the appropriate position in the buffer
+        Update bitmask for the next bit
+
+    Put the sorted results back to global ddata[threadIdx.x]
+
+Define main function:
+    Declare unsigned integer array hdata[WSIZE]
+    Declare float totalTime = 0
+
+    For each loop iteration from 0 to LOOPS:
+        Seed random number generator
+        Initialize range as 2 to the power of UPPER_BIT
+        Fill hdata array with values from 0 to WSIZE - 1
+        Copy hdata to ddata on the device
+
+        Call parallelRadix kernel with 1 block and WSIZE threads per block
+
+        Synchronize device to ensure kernel completion
+
+        Copy sorted data from ddata to hdata
+
+    Print results:
+        Print "Parallel Radix Sort:"
+        Print "Array size = WSIZE * LOOPS"
+        Print "Time elapsed = totalTime seconds"
+
+    Return 0
+```
+Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
+Source 2: https://github.com/ufukomer/cuda-radix-sort/blob/master/docs/Radix%20Sort%20Analyses%20in%20Parallel%20and%20Serial%20Way.pdf
+Source 3: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 ### 2c. Evaluation plan - what and how will you measure and compare
 
