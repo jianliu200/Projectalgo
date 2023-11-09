@@ -125,33 +125,97 @@ source 1: https://www.baeldung.com/cs/bitonic-sort
 
 source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
-3. Quicksort
+3. Quicksort MPI
+MPI
 ```
-procedure BUILD TREE (A[1...n]) 
-  begin 
-    for each process i do 
-    begin 
-        root := i; 
-        parenti := root; 
-        leftchild[i] := rightchild[i] := n + 1; 
-    end for 
-    repeat for each process i  r oot do 
-    begin 
-      if (A[i] < A[parenti]) or (A[i]= A[parenti] and i <parenti) then 
-      begin 
-          leftchild[parenti] :=i ; 
-          if i = leftchild[parenti] then exit 
-          else parenti := leftchild[parenti]; 
-      end for 
-      else 
-      begin 
-          rightchild[parenti] :=i; 
-          if i = rightchild[parenti] then exit 
-          else parenti := rightchild[parenti]; 
-      end else 
-    end repeat 
-end BUILD_TREE 
+procedure parallel_quicksort(A[1...n])
+  begin
+    initialize MPI
+    rank := MPI_Comm_rank(MPI_COMM_WORLD)
+    size := MPI_Comm_size(MPI_COMM_WORLD)
 
+    local_n := n / size
+    local_A[1...local_n]
+
+    MPI_Scatter(A, local_A, local_n, MPI_INT, 0, MPI_COMM_WORLD)
+
+    quicksort(local_A, local_n)
+
+    MPI_Gather(local_A, local_n, MPI_INT, A, local_n, MPI_INT, 0, MPI_COMM_WORLD)
+
+    if rank == 0 then
+      perform_final_merge_or_postprocessing(A)
+
+    MPI_Finalize()
+  end parallel_quicksort
+
+procedure quicksort(A[1...n], n)
+  begin
+    if n <= 1 then
+      return
+
+    pivot := choose_pivot(A, n)
+    pivot_idx := partition(A, pivot, n)
+    left_size := pivot_idx
+    right_size := n - pivot_idx - 1
+
+    split_data(A, left_A, right_A, pivot_idx, n)
+
+    parallel_quicksort(left_A)
+    parallel_quicksort(right_A)
+
+    merge_sorted_arrays(A, left_A, right_A)
+  end quicksort
+
+```
+
+CUDA
+```
+procedure cuda_quicksort(A[1...n])
+  begin
+    // Copy data from host to device
+    cudaMemcpy(d_A, A, n * sizeof(int), cudaMemcpyHostToDevice)
+
+    // Launch the CUDA quicksort kernel
+    dim3 block_size(512)
+    dim3 grid_size((n + block_size.x - 1) / block_size.x)
+    cuda_quicksort_kernel<<<grid_size, block_size>>>(d_A, n)
+
+    // Wait for the kernel to finish
+    cudaDeviceSynchronize()
+
+    // Copy sorted data back from device to host
+    cudaMemcpy(A, d_A, n * sizeof(int), cudaMemcpyDeviceToHost)
+
+    // Free device memory
+    cudaFree(d_A)
+  end cuda_quicksort
+
+__global__ void cuda_quicksort_kernel(int* A, int n)
+  begin
+    int thread_id = threadIdx.x + blockIdx.x * blockDim.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int size = 2; size < n; size *= 2)
+      begin
+        int half_size = size / 2;
+
+        for (int sub_size = half_size; sub_size > 0; sub_size /= 2)
+          begin
+            int step = half_size / sub_size;
+            int middle = thread_id * step;
+            int left = middle - half_size / 2;
+            int right = middle + half_size / 2;
+
+            if (right < n && A[right] < A[left])
+              swap(A[left], A[right]);
+
+            __syncthreads();
+          end
+
+        __syncthreads();
+      end
+  end cuda_quicksort_kernel
 ```
 
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
