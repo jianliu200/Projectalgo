@@ -13,53 +13,116 @@ The way our team is communicating is by using Discord and iMessages
 
 ## 2. _due 10/25_ Project topic
 For our project topic, we are going to be exploring parellel algoithm for sorting.
-## 2. _due 10/25_ Brief project description (what algorithms will you be comparing and on what architectures)
+### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
+
+Merge Sort (MPI)
+Merge Sort (CUDA)
+
+Radix Sort (MPI)
+Radix Sort (CUDA)
+
+Quick Sort (MPI)
+Quick Sort (CUDA)
+
+Bitonic Sort (MPI)
+Bitonic Sort (CUDA)
 
 
-The algorithm that we are going to use:
+### 2b. Pseudocode for each parallel algorithm
 
 1. Merge sort
 
 ```
+For MPI implimentation: 
+
 function parallelMergeSort(array):
-  if parent:
+  if MPI parent:
     localArray = array
-    for num processes:
-      recieve(newArray)
-      merge(localArray, newArray)
-      return localArray
+    MPI_Scatter(array, localArray, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    for each MPI process:
+      if MPI process rank != MPI parent rank:
+        MPI_Send(localArray, MPI process rank)
+      else:
+        MPI_Receive(newArray, MPI process rank)
+        merge(localArray, newArray)
+    MPI_Gather(localArray, array, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    return array
   else:
     localArray = array
-    send(localArray)
+    MPI_Scatter(array, localArray, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    for each MPI process:
+      if MPI process rank != MPI parent rank:
+        MPI_Receive(newArray, MPI process rank)
+        merge(localArray, newArray)
+      else:
+        MPI_Send(localArray, MPI process rank)
+    MPI_Gather(localArray, array, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+
+For the CUDA implimentation:
+
+
+
 ```
+
+Source:
 https://rachitvasudeva.medium.com/parallel-merge-sort-algorithm-e8175ab60e7
 https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
+ChatGPT: https://chat.openai.com/
 
 2. Bitonic sort
 ```
 Pseudocode:
-Bitonic sort:
+Bitonic sort (MPI):
 bitonic_sort(A, direction):
     n = A_size
     if n > 1:
-        Bitonic_sort(arr[1 to n/2]) //top half
-        Bitonic_sort(arr[(n/2 + 1) to n])
-        Merge(first and second half)
+        // Split data among processes
+        local_A = split_data(A, A_size)
+        
+        Bitonic_sort(local_A, direction) // Top half
+        Bitonic_sort(local_A, direction) // Bottom half
+        
+        // Synchronize before merging
+        MPI_Barrier(MPI_COMM_WORLD)
+        
+        Merge(local_A, direction) // Merge the first and second half
+        
+        // Synchronize after merging
+        MPI_Barrier(MPI_COMM_WORLD)
     end
 end
 
-Merge(A, direction):
+Merge (MPI, A, direction):
     n = A_size
     if n > 1:
-        for i:n/2:
+        for i in range(0, n/2):
             if A[i] > A[i + n/2]:
-                swap(A[i] A[i + n/2])
+                swap(A[i], A[i + n/2])
             end
         end
     end
 end
+
+Main (MPI):
+    Initialize MPI
+    Get numTasks and rank
+    If rank == 0:
+        // Initialize 'A' with data
+        A = initialize_data(A_size)
+    MPI_Bcast(A, A_size, MPI_INT, 0, MPI_COMM_WORLD) // Broadcast 'A' to all processes
+    bitonic_sort(A, direction) // Perform the bitonic sort
+    
+    // Gather sorted data to rank 0
+    All_A = gather_data(A, A_size)
+    
+    If rank == 0:
+        Merge (MPI, All_A, direction) // Merge sorted data on rank 0
+        Print sorted result
+    MPI_Finalize() // Finalize MPI
+End
 ```
-source: https://www.baeldung.com/cs/bitonic-sort
+source 1: https://www.baeldung.com/cs/bitonic-sort
+source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 3. Quicksort
 ```
@@ -87,19 +150,32 @@ procedure BUILD TREE (A[1...n])
       end else 
     end repeat 
 end BUILD_TREE 
+
+Radix Sort
+
+
 ```
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
 
+### 2c. Evaluation plan - what and how will you measure and compare
 
 The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
+
+## 3. Project implementation
+Implement your proposed algorithms, and test them starting on a small scale.
+Instrument your code, and turn in at least one Caliper file per algorithm;
+if you have implemented an MPI and a CUDA version of your algorithm,
+turn in a Caliper file for each.
+
+
+
+
+
 <!--
 For example:
 - Algorithm 1a (MPI + CUDA)
 - Algorithm 1b (MPI on each core)
 - Algorithm 2a (MPI + CUDA)
-<<<<<<< HEAD
-- Algorithm 2b (MPI on each core) -->
-=======
 - Algorithm 2b (MPI on each core)
 
 ### 2b. Pseudocode for each parallel algorithm
@@ -253,4 +329,3 @@ adiak::value("implementation_source", implementation_source) // Where you got th
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
 **See the `Builds/` directory to find the correct Caliper configurations to get the above metrics for CUDA, MPI, or OpenMP programs.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
->>>>>>> upstream/master
