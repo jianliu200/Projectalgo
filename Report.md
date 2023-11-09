@@ -33,22 +33,41 @@ Bitonic Sort (CUDA)
 1. Merge sort
 
 ```
+For MPI implimentation: 
+
 function parallelMergeSort(array):
-  if parent:
+  if MPI parent:
     localArray = array
-    for num processes:
-      recieve(newArray)
-      merge(localArray, newArray)
-      return localArray
+    MPI_Scatter(array, localArray, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    for each MPI process:
+      if MPI process rank != MPI parent rank:
+        MPI_Send(localArray, MPI process rank)
+      else:
+        MPI_Receive(newArray, MPI process rank)
+        merge(localArray, newArray)
+    MPI_Gather(localArray, array, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    return array
   else:
     localArray = array
-    send(localArray)
+    MPI_Scatter(array, localArray, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+    for each MPI process:
+      if MPI process rank != MPI parent rank:
+        MPI_Receive(newArray, MPI process rank)
+        merge(localArray, newArray)
+      else:
+        MPI_Send(localArray, MPI process rank)
+    MPI_Gather(localArray, array, size, MPI_DATATYPE, MPI_ROOT, MPI_COMM_WORLD)
+
+For the CUDA implimentation:
+
+
+
 ```
 
 Source:
 https://rachitvasudeva.medium.com/parallel-merge-sort-algorithm-e8175ab60e7
 https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
-ChatGPT
+ChatGPT: https://chat.openai.com/
 
 2. Bitonic sort
 ```
