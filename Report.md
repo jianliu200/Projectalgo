@@ -60,7 +60,32 @@ function parallelMergeSort(array):
 
 For the CUDA implimentation:
 
+void mergeSort(int* array, int size) {
+    int* localArray = array + blockIdx.x * blockDim.x;
+    extern __shared__ int temp[];
 
+    // Copy data to shared memory
+    for (int i = threadIdx.x; i < size; i += blockDim.x) {
+        temp[i] = localArray[i];
+    }
+    __syncthreads();
+
+    // Perform merge sort on shared memory
+    for (int stride = 1; stride < size; stride *= 2) {
+        int offset = stride * (threadIdx.x * 2);
+
+        if (offset < size) {
+            int mergeSize = min(2 * stride, size - offset);
+            merge(localArray + offset, temp + offset, mergeSize);
+        }
+        __syncthreads();
+    }
+
+    // Copy sorted data back to global memory
+    for (int i = threadIdx.x; i < size; i += blockDim.x) {
+        localArray[i] = temp[i];
+    }
+}
 
 ```
 
