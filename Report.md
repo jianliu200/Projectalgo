@@ -13,10 +13,22 @@ The way our team is communicating is by using Discord and iMessages
 
 ## 2. _due 10/25_ Project topic
 For our project topic, we are going to be exploring parellel algoithm for sorting.
-## 2. _due 10/25_ Brief project description (what algorithms will you be comparing and on what architectures)
+### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
+
+Merge Sort (MPI)
+Merge Sort (CUDA)
+
+Radix Sort (MPI)
+Radix Sort (CUDA)
+
+Quick Sort (MPI)
+Quick Sort (CUDA)
+
+Bitonic Sort (MPI)
+Bitonic Sort (CUDA)
 
 
-The algorithm that we are going to use:
+### 2b. Pseudocode for each parallel algorithm
 
 1. Merge sort
 
@@ -90,16 +102,25 @@ end BUILD_TREE
 ```
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
 
+### 2c. Evaluation plan - what and how will you measure and compare
 
 The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
+
+## 3. Project implementation
+Implement your proposed algorithms, and test them starting on a small scale.
+Instrument your code, and turn in at least one Caliper file per algorithm;
+if you have implemented an MPI and a CUDA version of your algorithm,
+turn in a Caliper file for each.
+
+
+
+
+
 <!--
 For example:
 - Algorithm 1a (MPI + CUDA)
 - Algorithm 1b (MPI on each core)
 - Algorithm 2a (MPI + CUDA)
-<<<<<<< HEAD
-- Algorithm 2b (MPI on each core) -->
-=======
 - Algorithm 2b (MPI on each core)
 
 ### 2b. Pseudocode for each parallel algorithm
@@ -253,4 +274,3 @@ adiak::value("implementation_source", implementation_source) // Where you got th
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
 **See the `Builds/` directory to find the correct Caliper configurations to get the above metrics for CUDA, MPI, or OpenMP programs.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
->>>>>>> upstream/master
