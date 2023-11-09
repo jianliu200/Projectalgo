@@ -32,6 +32,14 @@ struct list {
   size_t capacity;
 };
 
+const char* data_init = "data_init";
+const char* correctness_check = "correctness_check";
+const char* comp = "comp";
+const char* comp_large = "comp_large";
+const char* comm = "comm";
+const char* MPI_Send = "MPI_Send";
+const char* MPI_Recv = "MPI_Recv";
+
 // add item to a dynamic array encapsulated in a structure
 int add_item(List* list, int item) {
   if (list->length >= list->capacity) {
@@ -71,6 +79,9 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
   // MPI request and status
   MPI_Request req;
   MPI_Status stat;
+
+
+  CALI_MARK_BEGIN(comp_large);
 
   for (int pass = 0; pass < N; pass++) {          // each pass
 
@@ -148,6 +159,7 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       a = temp;
     }
 
+    CALI_MARK_BEGIN(MPI_Send);
     // send keys of this process to others
     for (int j = 0; j < B; j++) {
       int p = j / l_B;   // determine which process this buckets belongs to
@@ -163,7 +175,9 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
             &req);
       }
     }
+    CALI_MARK_END(MPI_Send);
 
+    CALI_MARK_BEGIN(MPI_Recv);
     // receive keys from other processes
     for (int j = 0; j < l_B; j++) {
       // transpose from local to global index 
@@ -193,10 +207,12 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
         }
       }
     }
+    CALI_MARK_END(MPI_Recv);
 
     // update new size
     *n = new_size;
   }
+  CALI_MARK_BEGIN(comp_large);
 
   return a;
 }
@@ -207,10 +223,6 @@ void usage(char* message) {
 
 int main(int argc, char** argv) {
   CALI_CXX_MARK_FUNCTION;
-
-  const char* data_init = "data_init";
-  const char* correctness_check = "correctness_check";
-  const char* comp = "comp";
 
 
   cali::ConfigManager mgr;
@@ -273,22 +285,25 @@ int main(int argc, char** argv) {
   }
   CALI_MARK_END(data_init);
 
+  CALI_MARK_BEGIN(comm);
   // let all processes get here
   MPI_Barrier(MPI_COMM_WORLD);
 
-  // then run the sorting algorithm
   CALI_MARK_BEGIN(comp);
+  // then run the sorting algorithm
   a = radix_sort(&a[0], buckets, size, rank, &n);
-  CALI_MARK_END(comp);
 
   if (a == NULL) {
     printf("ERROR: Sort failed, exiting ...\n");
     MPI_Finalize();
     return EXIT_FAILURE;
   }
+  CALI_MARK_END(comp);
 
   // wait for all processes to finish before printing results 
   MPI_Barrier(MPI_COMM_WORLD);
+  CALI_MARK_END(comm);
+
 
   if(rank == 0) {
     CALI_MARK_BEGIN(correctness_check);
