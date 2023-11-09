@@ -53,28 +53,57 @@ ChatGPT
 2. Bitonic sort
 ```
 Pseudocode:
-Bitonic sort:
+Bitonic sort (MPI):
 bitonic_sort(A, direction):
     n = A_size
     if n > 1:
-        Bitonic_sort(arr[1 to n/2]) //top half
-        Bitonic_sort(arr[(n/2 + 1) to n])
-        Merge(first and second half)
+        // Split data among processes
+        local_A = split_data(A, A_size)
+        
+        Bitonic_sort(local_A, direction) // Top half
+        Bitonic_sort(local_A, direction) // Bottom half
+        
+        // Synchronize before merging
+        MPI_Barrier(MPI_COMM_WORLD)
+        
+        Merge(local_A, direction) // Merge the first and second half
+        
+        // Synchronize after merging
+        MPI_Barrier(MPI_COMM_WORLD)
     end
 end
 
-Merge(A, direction):
+Merge (MPI, A, direction):
     n = A_size
     if n > 1:
-        for i:n/2:
+        for i in range(0, n/2):
             if A[i] > A[i + n/2]:
-                swap(A[i] A[i + n/2])
+                swap(A[i], A[i + n/2])
             end
         end
     end
 end
+
+Main (MPI):
+    Initialize MPI
+    Get numTasks and rank
+    If rank == 0:
+        // Initialize 'A' with data
+        A = initialize_data(A_size)
+    MPI_Bcast(A, A_size, MPI_INT, 0, MPI_COMM_WORLD) // Broadcast 'A' to all processes
+    bitonic_sort(A, direction) // Perform the bitonic sort
+    
+    // Gather sorted data to rank 0
+    All_A = gather_data(A, A_size)
+    
+    If rank == 0:
+        Merge (MPI, All_A, direction) // Merge sorted data on rank 0
+        Print sorted result
+    MPI_Finalize() // Finalize MPI
+End
 ```
-source: https://www.baeldung.com/cs/bitonic-sort
+source 1: https://www.baeldung.com/cs/bitonic-sort
+source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 3. Quicksort
 ```
