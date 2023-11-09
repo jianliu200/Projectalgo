@@ -44,8 +44,11 @@ function parallelMergeSort(array):
     localArray = array
     send(localArray)
 ```
+
+Source:
 https://rachitvasudeva.medium.com/parallel-merge-sort-algorithm-e8175ab60e7
 https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
+ChatGPT
 
 2. Bitonic sort
 ```
@@ -99,6 +102,10 @@ procedure BUILD TREE (A[1...n])
       end else 
     end repeat 
 end BUILD_TREE 
+
+Radix Sort
+
+
 ```
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
 
