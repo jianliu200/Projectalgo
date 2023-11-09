@@ -147,40 +147,155 @@ Main (MPI):
 End
 ```
 source 1: https://www.baeldung.com/cs/bitonic-sort
+
 source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
-3. Quicksort
+3. Quicksort MPI
+MPI
 ```
-procedure BUILD TREE (A[1...n]) 
-  begin 
-    for each process i do 
-    begin 
-        root := i; 
-        parenti := root; 
-        leftchild[i] := rightchild[i] := n + 1; 
-    end for 
-    repeat for each process i  r oot do 
-    begin 
-      if (A[i] < A[parenti]) or (A[i]= A[parenti] and i <parenti) then 
-      begin 
-          leftchild[parenti] :=i ; 
-          if i = leftchild[parenti] then exit 
-          else parenti := leftchild[parenti]; 
-      end for 
-      else 
-      begin 
-          rightchild[parenti] :=i; 
-          if i = rightchild[parenti] then exit 
-          else parenti := rightchild[parenti]; 
-      end else 
-    end repeat 
-end BUILD_TREE 
+procedure parallel_quicksort(A[1...n])
+  begin
+    initialize MPI
+    rank := MPI_Comm_rank(MPI_COMM_WORLD)
+    size := MPI_Comm_size(MPI_COMM_WORLD)
 
-Radix Sort
+    local_n := n / size
+    local_A[1...local_n]
 
+    MPI_Scatter(A, local_A, local_n, MPI_INT, 0, MPI_COMM_WORLD)
+
+    quicksort(local_A, local_n)
+
+    MPI_Gather(local_A, local_n, MPI_INT, A, local_n, MPI_INT, 0, MPI_COMM_WORLD)
+
+    if rank == 0 then
+      perform_final_merge_or_postprocessing(A)
+
+    MPI_Finalize()
+  end parallel_quicksort
+
+procedure quicksort(A[1...n], n)
+  begin
+    if n <= 1 then
+      return
+
+    pivot := choose_pivot(A, n)
+    pivot_idx := partition(A, pivot, n)
+    left_size := pivot_idx
+    right_size := n - pivot_idx - 1
+
+    split_data(A, left_A, right_A, pivot_idx, n)
+
+    parallel_quicksort(left_A)
+    parallel_quicksort(right_A)
+
+    merge_sorted_arrays(A, left_A, right_A)
+  end quicksort
 
 ```
+
+CUDA
+```
+procedure cuda_quicksort(A[1...n])
+  begin
+    // Copy data from host to device
+    cudaMemcpy(d_A, A, n * sizeof(int), cudaMemcpyHostToDevice)
+
+    // Launch the CUDA quicksort kernel
+    dim3 block_size(512)
+    dim3 grid_size((n + block_size.x - 1) / block_size.x)
+    cuda_quicksort_kernel<<<grid_size, block_size>>>(d_A, n)
+
+    // Wait for the kernel to finish
+    cudaDeviceSynchronize()
+
+    // Copy sorted data back from device to host
+    cudaMemcpy(A, d_A, n * sizeof(int), cudaMemcpyDeviceToHost)
+
+    // Free device memory
+    cudaFree(d_A)
+  end cuda_quicksort
+
+__global__ void cuda_quicksort_kernel(int* A, int n)
+  begin
+    int thread_id = threadIdx.x + blockIdx.x * blockDim.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int size = 2; size < n; size *= 2)
+      begin
+        int half_size = size / 2;
+
+        for (int sub_size = half_size; sub_size > 0; sub_size /= 2)
+          begin
+            int step = half_size / sub_size;
+            int middle = thread_id * step;
+            int left = middle - half_size / 2;
+            int right = middle + half_size / 2;
+
+            if (right < n && A[right] < A[left])
+              swap(A[left], A[right]);
+
+            __syncthreads();
+          end
+
+        __syncthreads();
+      end
+  end cuda_quicksort_kernel
+```
+
 http://users.atw.hu/parallelcomp/ch09lev1sec4.html
+
+4. Radix Sort:
+'''
+Pseudocode:
+Radix-Sort (MPI, A, d):
+    // It works similarly to Counting Sort for d number of passes.
+    // Each key in A[1..n] is a d-digit integer.
+    // Digits are numbered 1 to d from right to left.
+
+    Initialize MPI
+
+    Get numTasks and rank
+
+    for j = 1 to d do
+        // Local counts for each process
+        int local_count[10] = {0}
+
+        // Count the number of keys at each digit place (pass j)
+        for i = 0 to n do
+            local_count[key_of(A[i], j)]++
+
+        // Gather local counts to rank 0
+        MPI_Gather(local_count, 10, MPI_INT, global_count, 10, MPI_INT, 0, MPI_COMM_WORLD)
+
+        if rank == 0:
+            // Calculate cumulative counts
+            for k = 1 to 10 do
+                global_count[k] = global_count[k] + global_count[k-1]
+
+        // Broadcast global counts to all processes
+        MPI_Bcast(global_count, 10, MPI_INT, 0, MPI_COMM_WORLD)
+
+        // Initialize result array
+        int result[n]
+
+        // Build the resulting array by checking the new position of A[i] using count
+        for i = n-1 downto 0 do
+            result[global_count[key_of(A[i], j)]] = A[i]
+            global_count[key_of(A[i], j)]--
+
+        // Update A with the sorted result
+        for i = 0 to n do
+            A[i] = result[i]
+
+    end for (j)
+
+    MPI_Finalize() // Finalize MPI
+End
+'''
+Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
+
+Source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 ### 2c. Evaluation plan - what and how will you measure and compare
 
