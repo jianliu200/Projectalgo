@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <mpi.h>
+#include <algorithm> 
 
 #include <caliper/cali.h>
 #include <caliper/cali-manager.h>
@@ -72,7 +73,7 @@ int main(int argc, char** argv) {
 	CALI_MARK_BEGIN(comp_large);
 	mergeSort(sub_array, tmp_array, 0, (size - 1));
 	CALI_MARK_END(comp_large);
-	CALI_MAKR_END(comp);
+	CALI_MARK_END(comp);
 	/********** Gather the sorted subarrays into one **********/
 	int *sorted = NULL;
 	if(world_rank == 0) {
