@@ -1,10 +1,3 @@
-/**
- * -------------------- SOURCE -----------------------------------
- * Code: https://www.geeksforgeeks.org/implementation-of-quick-sort-using-mpi-omp-and-posix-thread/
- * Author: Ashutosh Soni
- * Date: March 20, 2023
- */
-
 // C program to implement the Quick Sort
 // Algorithm using MPI
 #include <mpi.h>
@@ -12,7 +5,36 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+
+#include <caliper/cali.h>
+#include <caliper/cali-manager.h>
+#include <adiak.hpp>
 using namespace std;
+
+const char* main = "main";
+const char* comm = "comm";
+const char* comm_large = "comm_large";
+const char* comp = "comp";
+const char* comp_large = "comp_large";
+const char* barrier = 'barrier'
+const char* gather = "gather";
+const char* scatter = "scatter";
+const char* Bcast = "Bcast";
+const char* data_init = "data_init";
+const char* checkCorrect = "checkCorrect";
+
+bool checkSorted(int* arr, int size) {
+    CALI_MARK_BEGIN(checkCorrect);
+    int prev = arr[0];
+    for(int i = 0; i < size; i++) {
+        if arr[i] < prev{
+            return false;
+        }
+        prev = arr[i]
+    }
+    CALI_MARK_END(checkCorrect);
+    return true;
+}
 
 // Function to swap two numbers
 void swap(int* arr, int i, int j)
@@ -98,6 +120,11 @@ int* merge(int* arr1, int n1, int* arr2, int n2)
 // Driver Code
 int main(int argc, char* argv[])
 {
+    CALI_CXX_MARK_FUNCTION;
+    cali::ConfigManager mgr;
+    CALI_MARK_BEGIN(main);
+    mgr.start();
+
 	int number_of_elements;
 	int* data = NULL;
 	int chunk_size, own_chunk_size;
@@ -169,10 +196,12 @@ int main(int argc, char* argv[])
 		}
 
 		// Printing the array read from file
+        CALI_MARK_BEGIN(data_init);
 		printf("Elements in the array is : \n");
 		for (int i = 0; i < number_of_elements; i++) {
 			printf("%d ", data[i]);
 		}
+        CALI_MARK_END(data_init);
 
 		printf("\n");
 
@@ -181,15 +210,19 @@ int main(int argc, char* argv[])
 	}
 
 	// Blocks all process until reach this point
+    CALI_MARK_BEGIN(barrier);
 	MPI_Barrier(MPI_COMM_WORLD);
+    CALI_MARK_END(barrier);
 
 	// Starts Timer
 	time_taken -= MPI_Wtime();
 
 	// BroadCast the Size to all the
 	// process from root process
+    CALI_MARK_BEGIN(Bcast);
 	MPI_Bcast(&number_of_elements, 1, MPI_INT, 0,
 			MPI_COMM_WORLD);
+    CALI_MARK_END(Bcast);
 
 	// Computing chunk size
 	chunk_size
@@ -202,10 +235,12 @@ int main(int argc, char* argv[])
 	// according to bits
 	chunk = (int*)malloc(chunk_size * sizeof(int));
 
+    CALI_MARK_BEGIN(scatter);
 	// Scatter the chuck size data to all process
 	MPI_Scatter(data, chunk_size, MPI_INT, chunk,
 				chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
 	free(data);
+    CALI_MARK_END(scatter);
 	data = NULL;
 
 	// Compute size of own chunk and
@@ -220,8 +255,11 @@ int main(int argc, char* argv[])
 
 	// Sorting array with quick sort for every
 	// chunk as called by process
+    CALI_MARK_BEGIN(comp);
 	quicksort(chunk, 0, own_chunk_size);
+    CALI_MARK_END(comp);
 
+    CALI_MARK_BEGIN(comm);
 	for (int step = 1; step < number_of_process;
 		step = 2 * step) {
 		if (rank_of_process % (2 * step) != 0) {
@@ -258,6 +296,7 @@ int main(int argc, char* argv[])
 				= own_chunk_size + received_chunk_size;
 		}
 	}
+    CALI_MARK_END(comm);
 
 	// Stop the timer
 	time_taken += MPI_Wtime();
@@ -308,23 +347,29 @@ int main(int argc, char* argv[])
 			time_taken);
 	}
 
+    cout << "Is the array sorted? " << checkSorted(chunk, own_chunk_size) << endl;
+
+    adiak::init(NULL);
+    adiak::launchdate();    // launch date of the job
+    adiak::libraries();     // Libraries used
+    adiak::cmdline();       // Command line used to launch the job
+    adiak::clustername();   // Name of the cluster
+    adiak::value("Algorithm", "Quick Sort"); // The name of the algorithm you are using (e.g., "MergeSort", "BitonicSort")
+    adiak::value("ProgrammingModel", "MPI"); // e.g., "MPI", "CUDA", "MPIwithCUDA"
+    adiak::value("Datatype", "int"); // The datatype of input elements (e.g., double, int, float)
+    adiak::value("SizeOfDatatype", sizeof(int)); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
+    adiak::value("InputSize", own_chunk_size); // The number of elements in input dataset (1000)
+    adiak::value("InputType", "Sorted"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
+    adiak::value("num_procs", number_of_process); // The number of processors (MPI ranks)
+    adiak::value("check correct", checkCorrect); // check the correctness
+    // adiak::value("num_threads", num_threads); // The number of CUDA or OpenMP threads
+    // adiak::value("num_blocks", num_blocks); // The number of CUDA blocks 
+    adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
+    adiak::value("implementation_source", "Online: https://www.geeksforgeeks.org/implementation-of-quick-sort-using-mpi-omp-and-posix-thread/") // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
+
+    CALI_MARK_END(main);
+    mgr.stop();
+    mgr.flush();
 	MPI_Finalize();
 	return 0;
 }
-
-adiak::init(NULL);
-adiak::launchdate();    // launch date of the job
-adiak::libraries();     // Libraries used
-adiak::cmdline();       // Command line used to launch the job
-adiak::clustername();   // Name of the cluster
-adiak::value("Algorithm", algorithm); // The name of the algorithm you are using (e.g., "MergeSort", "BitonicSort")
-adiak::value("ProgrammingModel", programmingModel); // e.g., "MPI", "CUDA", "MPIwithCUDA"
-adiak::value("Datatype", datatype); // The datatype of input elements (e.g., double, int, float)
-adiak::value("SizeOfDatatype", sizeOfDatatype); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
-adiak::value("InputSize", inputSize); // The number of elements in input dataset (1000)
-adiak::value("InputType", inputType); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
-adiak::value("num_procs", num_procs); // The number of processors (MPI ranks)
-// adiak::value("num_threads", num_threads); // The number of CUDA or OpenMP threads
-// adiak::value("num_blocks", num_blocks); // The number of CUDA blocks 
-// adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
-adiak::value("implementation_source", implementation_source) // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
