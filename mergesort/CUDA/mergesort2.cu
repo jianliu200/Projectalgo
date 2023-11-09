@@ -151,15 +151,11 @@ int main(int argc, char** argv) {
     //     std::cout << "sorting " << size << " numbers\n\n";
 
     // merge-sort the data
-    CALI_MARK_BEGIN(comm);
-    CALI_MARK_BEGIN(comm_large);
-    CALI_MARK_BEGIN(comp);
-    CALI_MARK_BEGIN(comp_large);
+    
+    
     mergesort(data, size, threadsPerBlock, blocksPerGrid);
-    CALI_MARK_END(comp_large);
-    CALI_MARK_END(comp);
-    CALI_MARK_END(comm_large);
-    CALI_MARK_END(comm);
+    
+    
     tm();
 
     //
@@ -220,6 +216,8 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     dim3* D_blocks;
     
     // Actually allocate the two arrays
+    CALI_MARK_BEGIN(comm);
+    CALI_MARK_BEGIN(comm_large);
     tm();
     checkCudaErrors(cudaMalloc((void**) &D_data, size * sizeof(long)));
     checkCudaErrors(cudaMalloc((void**) &D_swp, size * sizeof(long)));
@@ -242,6 +240,9 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     checkCudaErrors(cudaMemcpy(D_threads, &threadsPerBlock, sizeof(dim3), cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(D_blocks, &blocksPerGrid, sizeof(dim3), cudaMemcpyHostToDevice));
 
+    CALI_MARK_END(comm_large);
+    CALI_MARK_END(comm);
+    
     if (verbose)
         std::cout << "cudaMemcpy thread data to device: " << tm() << " microseconds\n";
 
@@ -255,6 +256,8 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     // Slice up the list and give pieces of it to each thread, letting the pieces grow
     // bigger and bigger until the whole list is sorted
     //
+    CALI_MARK_BEGIN(comp);
+    CALI_MARK_BEGIN(comp_large);
     for (int width = 2; width < (size << 1); width <<= 1) {
         long slices = size / ((nThreads) * width) + 1;
 
@@ -275,6 +278,8 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
         A = A == D_data ? D_swp : D_data;
         B = B == D_data ? D_swp : D_data;
     }
+    CALI_MARK_END(comp_large);
+    CALI_MARK_END(comp);
 
     //
     // Get the list back from the GPU
