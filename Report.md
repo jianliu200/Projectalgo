@@ -60,32 +60,79 @@ function parallelMergeSort(array):
 
 For the CUDA implimentation:
 
-void mergeSort(int* array, int size) {
-    int* localArray = array + blockIdx.x * blockDim.x;
-    extern __shared__ int temp[];
+# Host code
+function parallelMergeSort(array):
+    # Allocate memory on GPU
+    cudaMalloc(deviceArray, size)
 
-    // Copy data to shared memory
-    for (int i = threadIdx.x; i < size; i += blockDim.x) {
-        temp[i] = localArray[i];
-    }
-    __syncthreads();
+    # Copy data from host to device
+    cudaMemcpy(deviceArray, array, size, cudaMemcpyHostToDevice)
 
-    // Perform merge sort on shared memory
-    for (int stride = 1; stride < size; stride *= 2) {
-        int offset = stride * (threadIdx.x * 2);
+    # Launch kernel with specified number of blocks and threads
+    parallelMergeSortKernel<<<numBlocks, numThreads>>>(deviceArray, size)
 
-        if (offset < size) {
-            int mergeSize = min(2 * stride, size - offset);
-            merge(localArray + offset, temp + offset, mergeSize);
-        }
-        __syncthreads();
-    }
+    # Copy sorted data from device to host
+    cudaMemcpy(array, deviceArray, size, cudaMemcpyDeviceToHost)
 
-    // Copy sorted data back to global memory
-    for (int i = threadIdx.x; i < size; i += blockDim.x) {
-        localArray[i] = temp[i];
-    }
-}
+    # Free allocated memory on GPU
+    cudaFree(deviceArray)
+
+# Device code
+function parallelMergeSortKernel(deviceArray, size):
+    localArray = deviceArray  # Each block has its own copy of localArray
+
+    # Perform merge sort on localArray
+    mergeSort(localArray, size)
+
+    # Synchronize threads within the block before returning
+    __syncthreads()
+
+# Function to perform merge sort on a given array
+function mergeSort(array, size):
+    # Base case: If the array is of size 1 or empty, it's already sorted
+    if size <= 1:
+        return
+
+    # Split the array into two halves
+    mid = size / 2
+    leftArray = array[:mid]
+    rightArray = array[mid:]
+
+    # Recursively sort the two halves
+    mergeSort(leftArray, mid)
+    mergeSort(rightArray, size - mid)
+
+    # Merge the sorted halves
+    merge(array, leftArray, mid, rightArray, size - mid)
+
+# Function to merge two sorted arrays
+function merge(array, leftArray, leftSize, rightArray, rightSize):
+    i = 0
+    j = 0
+    k = 0
+
+    # Compare elements of left and right arrays and merge them in sorted order
+    while i < leftSize and j < rightSize:
+        if leftArray[i] <= rightArray[j]:
+            array[k] = leftArray[i]
+            i += 1
+        else:
+            array[k] = rightArray[j]
+            j += 1
+        k += 1
+
+    # Copy the remaining elements of leftArray, if any
+    while i < leftSize:
+        array[k] = leftArray[i]
+        i += 1
+        k += 1
+
+    # Copy the remaining elements of rightArray, if any
+    while j < rightSize:
+        array[k] = rightArray[j]
+        j += 1
+        k += 1
+
 
 ```
 
