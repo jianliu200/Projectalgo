@@ -233,7 +233,7 @@ source 1: https://codepal.ai/code-generator/query/15oCYvGw/bitonic-sort-cuda
 
 source 2: https://claude.ai/
 
-3. Quicksort MPI
+3. Quicksort
 MPI
 ```
 procedure parallel_quicksort(A[1...n])
@@ -326,7 +326,7 @@ __global__ void cuda_quicksort_kernel(int* A, int n)
   end cuda_quicksort_kernel
 ```
 
-http://users.atw.hu/parallelcomp/ch09lev1sec4.html
+https://chat.openai.com
 
 4. Radix Sort
 ```
