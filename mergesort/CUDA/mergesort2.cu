@@ -21,6 +21,8 @@
 #include <caliper/cali.h>
 #include <caliper/cali-manager.h>
 #include <adiak.hpp>
+#include <algorithm>
+#include <helper_cuda.h>
 
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
@@ -225,26 +227,26 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     CALI_MARK_BEGIN(comm);
     CALI_MARK_BEGIN(comm_large);
     tm();
-    checkCudaErrors(cudaMalloc((void**) &D_data, size * sizeof(long)));
-    checkCudaErrors(cudaMalloc((void**) &D_swp, size * sizeof(long)));
+    cudaMalloc((void**) &D_data, size * sizeof(long));
+    cudaMalloc((void**) &D_swp, size * sizeof(long));
     if (verbose)
         std::cout << "cudaMalloc device lists: " << tm() << " microseconds\n";
 
     // Copy from our input list into the first array
-    checkCudaErrors(cudaMemcpy(D_data, data, size * sizeof(long), cudaMemcpyHostToDevice));
+    cudaMemcpy(D_data, data, size * sizeof(long), cudaMemcpyHostToDevice);
     if (verbose) 
         std::cout << "cudaMemcpy list to device: " << tm() << " microseconds\n";
  
     //
     // Copy the thread / block info to the GPU as well
     //
-    checkCudaErrors(cudaMalloc((void**) &D_threads, sizeof(dim3)));
-    checkCudaErrors(cudaMalloc((void**) &D_blocks, sizeof(dim3)));
+    cudaMalloc((void**) &D_threads, sizeof(dim3));
+    cudaMalloc((void**) &D_blocks, sizeof(dim3));
 
     if (verbose)
         std::cout << "cudaMalloc device thread data: " << tm() << " microseconds\n";
-    checkCudaErrors(cudaMemcpy(D_threads, &threadsPerBlock, sizeof(dim3), cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMemcpy(D_blocks, &blocksPerGrid, sizeof(dim3), cudaMemcpyHostToDevice));
+    cudaMemcpy(D_threads, &threadsPerBlock, sizeof(dim3), cudaMemcpyHostToDevice);
+    cudaMemcpy(D_blocks, &blocksPerGrid, sizeof(dim3), cudaMemcpyHostToDevice);
 
     CALI_MARK_END(comm_large);
     CALI_MARK_END(comm);
@@ -291,14 +293,14 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     // Get the list back from the GPU
     //
     tm();
-    checkCudaErrors(cudaMemcpy(data, A, size * sizeof(long), cudaMemcpyDeviceToHost));
+    cudaMemcpy(data, A, size * sizeof(long), cudaMemcpyDeviceToHost);
     if (verbose)
         std::cout << "cudaMemcpy list back to host: " << tm() << " microseconds\n";
     
     
     // Free the GPU memory
-    checkCudaErrors(cudaFree(A));
-    checkCudaErrors(cudaFree(B));
+    cudaFree(A);
+    cudaFree(B);
     if (verbose)
         std::cout << "cudaFree: " << tm() << " microseconds\n";
 }
