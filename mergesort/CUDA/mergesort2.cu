@@ -22,12 +22,12 @@
 #include <caliper/cali-manager.h>
 #include <adiak.hpp>
 #include <algorithm>
-#include <helper_cuda.h>
+//#include <helper_cuda.h>
 
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-long readList(long**);
+//long readList(long**);
 
 // data[], size, threads, blocks, 
 void mergesort(long*, long, dim3, dim3);
@@ -46,7 +46,7 @@ __device__ void gpu_bottomUpMerge(long*, long*, long, long, long);
 // const char* correctness = "correctness";
 
 // profiling
-int tm();
+//int tm();
 
 #define min(a, b) (a < b ? a : b)
 const char* main_loop = "main loop";
@@ -59,82 +59,11 @@ const char* correctness = "correctness";
 
 bool verbose = true;
 int main(int argc, char** argv) {
+    printf("I have reached here\n");
     CALI_CXX_MARK_FUNCTION;
     cali::ConfigManager mgr;
 	mgr.start();
     CALI_MARK_BEGIN(main_loop);
-    
-
-    //
-    // Parse argv
-    //
-    // tm();
-    // for (int i = 1; i < argc; i++) {
-    //     if (argv[i][0] == '-' && argv[i][1] && !argv[i][2]) {
-    //         char arg = argv[i][1];
-    //         unsigned int* toSet = 0;
-    //         switch(arg) {
-    //             case 'x':
-    //                 toSet = &threadsPerBlock.x;
-    //                 break;
-    //             case 'y':
-    //                 toSet = &threadsPerBlock.y;
-    //                 break;
-    //             case 'z':
-    //                 toSet = &threadsPerBlock.z;
-    //                 break;
-    //             case 'X':
-    //                 toSet = &blocksPerGrid.x;
-    //                 break;
-    //             case 'Y':
-    //                 toSet = &blocksPerGrid.y;
-    //                 break;
-    //             case 'Z':
-    //                 toSet = &blocksPerGrid.z;
-    //                 break;
-    //             case 'v':
-    //                 verbose = true;
-    //                 break;
-    //             default:
-    //                 std::cout << "unknown argument: " << arg << '\n';
-    //                 printHelp(argv[0]);
-    //                 return -1;
-    //         }
-
-    //         if (toSet) {
-    //             i++;
-    //             *toSet = (unsigned int) strtol(argv[i], 0, 10);
-    //         }
-    //     }
-    //     else {
-    //         if (argv[i][0] == '?' && !argv[i][1])
-    //             std::cout << "help:\n";
-    //         else
-    //             std::cout << "invalid argument: " << argv[i] << '\n';
-    //         printHelp(argv[0]);
-    //         return -1;
-    //     }
-    // }
-
-    // if (verbose) {
-    //     std::cout << "parse argv " << tm() << " microseconds\n";
-    //     std::cout << "\nthreadsPerBlock:"
-    //               << "\n  x: " << threadsPerBlock.x
-    //               << "\n  y: " << threadsPerBlock.y
-    //               << "\n  z: " << threadsPerBlock.z
-    //               << "\n\nblocksPerGrid:"
-    //               << "\n  x:" << blocksPerGrid.x
-    //               << "\n  y:" << blocksPerGrid.y
-    //               << "\n  z:" << blocksPerGrid.z
-    //               << "\n\n total threads: " 
-    //               << threadsPerBlock.x * threadsPerBlock.y * threadsPerBlock.z *
-    //                  blocksPerGrid.x * blocksPerGrid.y * blocksPerGrid.z
-    //               << "\n\n";
-    // }
-
-    //
-    // Read numbers from stdin
-    //
     long* data;
     long size = atoi(argv[2]);
     CALI_MARK_BEGIN(data_init);
@@ -147,11 +76,11 @@ int main(int argc, char** argv) {
     dim3 threadsPerBlock;
     dim3 blocksPerGrid;
 
-    threadsPerBlock.x = atoi(argv[1]);
+    threadsPerBlock.x = 32;// atoi(argv[1]);
     threadsPerBlock.y = 1;
     threadsPerBlock.z = 1;
 
-    blocksPerGrid.x = atoi(argv[1])/size;
+    blocksPerGrid.x = 8;//atoi(argv[1])/size;
     blocksPerGrid.y = 1;
     blocksPerGrid.z = 1;
 
@@ -164,7 +93,7 @@ int main(int argc, char** argv) {
     mergesort(data, size, threadsPerBlock, blocksPerGrid);
     
     
-    tm();
+    //tm();
 
     //
     // Print out the list
@@ -185,9 +114,10 @@ int main(int argc, char** argv) {
         std::cout << "The array is not sorted\n";
     }
 
-    if (verbose) {
-        std::cout << "print list to stdout: " << tm() << " microseconds\n";
-    }
+    // if (verbose) {
+    //     std::cout << "print list to stdout: " << tm() << " microseconds\n";
+    // }
+    printf("I have reached here2\n");
 
     CALI_MARK_END(main_loop);
     mgr.stop();
@@ -226,16 +156,16 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     // Actually allocate the two arrays
     CALI_MARK_BEGIN(comm);
     CALI_MARK_BEGIN(comm_large);
-    tm();
+    //tm();
     cudaMalloc((void**) &D_data, size * sizeof(long));
     cudaMalloc((void**) &D_swp, size * sizeof(long));
-    if (verbose)
-        std::cout << "cudaMalloc device lists: " << tm() << " microseconds\n";
+    // if (verbose)
+    //     std::cout << "cudaMalloc device lists: " << tm() << " microseconds\n";
 
     // Copy from our input list into the first array
     cudaMemcpy(D_data, data, size * sizeof(long), cudaMemcpyHostToDevice);
-    if (verbose) 
-        std::cout << "cudaMemcpy list to device: " << tm() << " microseconds\n";
+    // if (verbose) 
+    //     std::cout << "cudaMemcpy list to device: " << tm() << " microseconds\n";
  
     //
     // Copy the thread / block info to the GPU as well
@@ -243,16 +173,16 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     cudaMalloc((void**) &D_threads, sizeof(dim3));
     cudaMalloc((void**) &D_blocks, sizeof(dim3));
 
-    if (verbose)
-        std::cout << "cudaMalloc device thread data: " << tm() << " microseconds\n";
+    // if (verbose)
+    //     std::cout << "cudaMalloc device thread data: " << tm() << " microseconds\n";
     cudaMemcpy(D_threads, &threadsPerBlock, sizeof(dim3), cudaMemcpyHostToDevice);
     cudaMemcpy(D_blocks, &blocksPerGrid, sizeof(dim3), cudaMemcpyHostToDevice);
 
     CALI_MARK_END(comm_large);
     CALI_MARK_END(comm);
     
-    if (verbose)
-        std::cout << "cudaMemcpy thread data to device: " << tm() << " microseconds\n";
+    // if (verbose)
+    //     std::cout << "cudaMemcpy thread data to device: " << tm() << " microseconds\n";
 
     long* A = D_data;
     long* B = D_swp;
@@ -266,21 +196,22 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     //
     CALI_MARK_BEGIN(comp);
     CALI_MARK_BEGIN(comp_large);
+    printf("Before the comp\n");
     for (int width = 2; width < (size << 1); width <<= 1) {
         long slices = size / ((nThreads) * width) + 1;
 
-        if (verbose) {
-            std::cout << "mergeSort - width: " << width 
-                      << ", slices: " << slices 
-                      << ", nThreads: " << nThreads << '\n';
-            tm();
-        }
+        // if (verbose) {
+        //     std::cout << "mergeSort - width: " << width 
+        //               << ", slices: " << slices 
+        //               << ", nThreads: " << nThreads << '\n';
+        //     tm();
+        // }
 
         // Actually call the kernel
         gpu_mergesort<<<blocksPerGrid, threadsPerBlock>>>(A, B, size, width, slices, D_threads, D_blocks);
 
-        if (verbose)
-            std::cout << "call mergesort kernel: " << tm() << " microseconds\n";
+        // if (verbose)
+        //     std::cout << "call mergesort kernel: " << tm() << " microseconds\n";
 
         // Switch the input / output arrays instead of copying them around
         A = A == D_data ? D_swp : D_data;
@@ -288,21 +219,21 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     }
     CALI_MARK_END(comp_large);
     CALI_MARK_END(comp);
-
+    printf("After the comp\n");
     //
     // Get the list back from the GPU
     //
-    tm();
+    //tm();
     cudaMemcpy(data, A, size * sizeof(long), cudaMemcpyDeviceToHost);
-    if (verbose)
-        std::cout << "cudaMemcpy list back to host: " << tm() << " microseconds\n";
+    // if (verbose)
+    //     std::cout << "cudaMemcpy list back to host: " << tm() << " microseconds\n";
     
     
     // Free the GPU memory
     cudaFree(A);
     cudaFree(B);
-    if (verbose)
-        std::cout << "cudaFree: " << tm() << " microseconds\n";
+    // if (verbose)
+    //     std::cout << "cudaFree: " << tm() << " microseconds\n";
 }
 
 // GPU helper function
@@ -363,50 +294,50 @@ typedef struct {
 
 // helper function for reading numbers from stdin
 // it's 'optimized' not to check validity of the characters it reads in..
-long readList(long** list) {
-    tm();
-    long v, size = 0;
-    LinkNode* node = 0;
-    LinkNode* first = 0;
-    while (std::cin >> v) {
-        LinkNode* next = new LinkNode();
-        next->v = v;
-        if (node)
-            node->next = next;
-        else 
-            first = next;
-        node = next;
-        size++;
-    }
+// long readList(long** list) {
+//     tm();
+//     long v, size = 0;
+//     LinkNode* node = 0;
+//     LinkNode* first = 0;
+//     while (std::cin >> v) {
+//         LinkNode* next = new LinkNode();
+//         next->v = v;
+//         if (node)
+//             node->next = next;
+//         else 
+//             first = next;
+//         node = next;
+//         size++;
+//     }
 
 
-    if (size) {
-        *list = new long[size]; 
-        LinkNode* node = first;
-        long i = 0;
-        while (node) {
-            (*list)[i++] = node->v;
-            node = (LinkNode*) node->next;
-        }
+//     if (size) {
+//         *list = new long[size]; 
+//         LinkNode* node = first;
+//         long i = 0;
+//         while (node) {
+//             (*list)[i++] = node->v;
+//             node = (LinkNode*) node->next;
+//         }
 
-    }
+//     }
 
-    if (verbose)
-        std::cout << "read stdin: " << tm() << " microseconds\n";
+//     // if (verbose)
+//     //     std::cout << "read stdin: " << tm() << " microseconds\n";
 
-    return size;
-}
+//     return size;
+// }
 
 
 // 
 // Get the time (in microseconds) since the last call to tm();
 // the first value returned by this must not be trusted
 //
-timeval tStart;
-int tm() {
-    timeval tEnd;
-    gettimeofday(&tEnd, 0);
-    int t = (tEnd.tv_sec - tStart.tv_sec) * 1000000 + tEnd.tv_usec - tStart.tv_usec;
-    tStart = tEnd;
-    return t;
-}
+// timeval tStart;
+// int tm() {
+//     timeval tEnd;
+//     gettimeofday(&tEnd, 0);
+//     int t = (tEnd.tv_sec - tStart.tv_sec) * 1000000 + tEnd.tv_usec - tStart.tv_usec;
+//     tStart = tEnd;
+//     return t;
+// }
