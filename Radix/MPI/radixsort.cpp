@@ -37,8 +37,9 @@ const char* correctness_check = "correctness_check";
 const char* comp = "comp";
 const char* comp_large = "comp_large";
 const char* comm = "comm";
-const char* MPI_Send = "MPI_Send";
-const char* MPI_Recv = "MPI_Recv";
+const char* comm_large = "comm_large";
+const char* mpi_send = "mpi_send";
+const char* mpi_recv = "mpi_recv";
 
 // add item to a dynamic array encapsulated in a structure
 int add_item(List* list, int item) {
@@ -101,8 +102,10 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
         return NULL;
       }
     }
-
+    
+    CALI_MARK_BEGIN(comm_large);
     // do one-to-all transpose
+    CALI_MARK_BEGIN(mpi_send);
     for (int p = 0; p < P; p++) {
       if (p != rank) {
         // send counts of this process to others
@@ -116,8 +119,10 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
             &req);
       }
     }
+    CALI_MARK_END(mpi_send);
 
     // receive counts from others
+    CALI_MARK_BEGIN(mpi_recv);
     for (int p = 0; p < P; p++) {
       if (p != rank) {
         MPI_Recv(
@@ -135,6 +140,7 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
         }
       }
     }
+    CALI_MARK_END(mpi_recv);
 
     // calculate new size based on values received from all processes
     int new_size = 0;
@@ -159,7 +165,7 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       a = temp;
     }
 
-    CALI_MARK_BEGIN(MPI_Send);
+    CALI_MARK_BEGIN(mpi_send);
     // send keys of this process to others
     for (int j = 0; j < B; j++) {
       int p = j / l_B;   // determine which process this buckets belongs to
@@ -175,9 +181,9 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
             &req);
       }
     }
-    CALI_MARK_END(MPI_Send);
+    CALI_MARK_END(mpi_send);
 
-    CALI_MARK_BEGIN(MPI_Recv);
+    CALI_MARK_BEGIN(mpi_recv);
     // receive keys from other processes
     for (int j = 0; j < l_B; j++) {
       // transpose from local to global index 
@@ -207,12 +213,13 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
         }
       }
     }
-    CALI_MARK_END(MPI_Recv);
+    CALI_MARK_END(mpi_recv);
 
     // update new size
     *n = new_size;
+    CALI_MARK_END(comm_large);
   }
-  CALI_MARK_BEGIN(comp_large);
+  CALI_MARK_END(comp_large);
 
   return a;
 }
@@ -329,7 +336,8 @@ int main(int argc, char** argv) {
   adiak::value("SizeOfDatatype", sizeof(int)); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
   adiak::value("InputSize", n_total); // The number of elements in input dataset (1000)
   adiak::value("InputType", "Random"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
-  adiak::value("num_procs", size);
+  adiak::value("num_procs", size); // The number of processors (MPI ranks)
+  adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
   adiak::value("implementation_source", "Online (https://github.com/ym720/p_radix_sort_mpi/blob/master)"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
   
