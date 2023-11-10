@@ -16,8 +16,14 @@
 
 
 #include <iostream>
-#include <helper_cuda.h>
+//#include <helper_cuda.h>
 #include <sys/time.h>
+#include <caliper/cali.h>
+#include <caliper/cali-manager.h>
+#include <adiak.hpp>
+
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
 long readList(long**);
 
