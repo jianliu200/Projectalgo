@@ -9,7 +9,7 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 
-#define WSIZE 100
+#define WSIZE 65536
 #define LOOPS 1
 #define UPPER_BIT 10
 #define LOWER_BIT 0
@@ -20,6 +20,7 @@ const char* comp = "comp";
 const char* comp_large = "comp_large";
 const char* comm = "comm";
 const char* comm_large = "comm_large";
+const char* cudaMemcopy = "cudaMemcpy";
 
 
 __device__ unsigned int ddata[WSIZE];
@@ -27,7 +28,7 @@ __device__ unsigned int ddata[WSIZE];
 __global__ void parallelRadix() {
  
   // This data in shared memory
-	__shared__ volatile unsigned int sdata[WSIZE * 2];
+	unsigned int sdata[WSIZE * 2];
 
 	// Load from global into shared variable
 	sdata[threadIdx.x] = ddata[threadIdx.x];
@@ -68,13 +69,17 @@ __global__ void parallelRadix() {
 	ddata[threadIdx.x] = sdata[threadIdx.x + offset];
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   CALI_CXX_MARK_FUNCTION;
   
   cali::ConfigManager mgr;
   mgr.start();
 
 	unsigned int hdata[WSIZE];
+
+  int THREADS = atoi(argv[2]);
+  int NUM_VALS = atoi(argv[1]);
+  int BLOCKS = NUM_VALS / THREADS;
 
 	for (int lcount = 0; lcount < LOOPS; lcount++) {
 		srand(time(NULL));
@@ -89,14 +94,16 @@ int main() {
 
     CALI_MARK_BEGIN(comm);
     CALI_MARK_BEGIN(comm_large);
+    CALI_MARK_BEGIN(cudaMemcopy);
 		// Copy data from host to device
 		cudaMemcpyToSymbol(ddata, hdata, WSIZE * sizeof(unsigned int));
+    CALI_MARK_END(cudaMemcopy);
     CALI_MARK_END(comm_large);
     CALI_MARK_END(comm);
 
     CALI_MARK_BEGIN(comp);
     CALI_MARK_BEGIN(comp_large);
-		parallelRadix <<< 1, WSIZE >>>();
+		parallelRadix <<< BLOCKS, THREADS >>>();
     CALI_MARK_END(comp_large);
     
 		// Make kernel function synchronous
@@ -106,7 +113,9 @@ int main() {
     CALI_MARK_BEGIN(comm);
 		// Copy data from device to host
     CALI_MARK_BEGIN(comm_large);
+    CALI_MARK_BEGIN(cudaMemcopy);
 		cudaMemcpyFromSymbol(hdata, ddata, WSIZE * sizeof(unsigned int));
+    CALI_MARK_END(cudaMemcopy);
     CALI_MARK_END(comm_large);
     CALI_MARK_END(comm);
 	}
@@ -131,10 +140,10 @@ int main() {
   adiak::value("ProgrammingModel", "CUDA"); // e.g., "MPI", "CUDA", "MPIwithCUDA"
   adiak::value("Datatype", "int"); // The datatype of input elements (e.g., double, int, float)
   adiak::value("SizeOfDatatype", sizeof(int)); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
-  adiak::value("InputSize", "100"); // The number of elements in input dataset (1000)
+  adiak::value("InputSize", NUM_VALS); // The number of elements in input dataset (1000)
   adiak::value("InputType", "Random"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
-  adiak::value("num_threads", "4"); // The number of CUDA or OpenMP threads  
-  adiak::value("num_blocks", "25"); // The number of CUDA blocks 
+  adiak::value("num_threads", THREADS); // The number of CUDA or OpenMP threads  
+  adiak::value("num_blocks", BLOCKS); // The number of CUDA blocks 
   adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
   adiak::value("implementation_source", "Online (https://github.com/ym720/p_radix_sort_mpi/blob/master)"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
