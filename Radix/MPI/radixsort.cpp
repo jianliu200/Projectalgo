@@ -38,8 +38,9 @@ const char* comp = "comp";
 const char* comp_large = "comp_large";
 const char* comm = "comm";
 const char* comm_large = "comm_large";
-const char* mpi_send = "mpi_send";
-const char* mpi_recv = "mpi_recv";
+const char* mpi_send = "MPI_Send";
+const char* mpi_recv = "MPI_Recv";
+const char* mpi_barrier = "MPI_Barrier";
 
 // add item to a dynamic array encapsulated in a structure
 int add_item(List* list, int item) {
@@ -82,8 +83,6 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
   MPI_Status stat;
 
 
-  CALI_MARK_BEGIN(comp_large);
-
   for (int pass = 0; pass < N; pass++) {          // each pass
 
     // init counts arrays
@@ -103,9 +102,10 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       }
     }
     
+    CALI_MARK_BEGIN(comm);
     CALI_MARK_BEGIN(comm_large);
-    // do one-to-all transpose
     CALI_MARK_BEGIN(mpi_send);
+    // do one-to-all transpose
     for (int p = 0; p < P; p++) {
       if (p != rank) {
         // send counts of this process to others
@@ -121,8 +121,8 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
     }
     CALI_MARK_END(mpi_send);
 
-    // receive counts from others
     CALI_MARK_BEGIN(mpi_recv);
+    // receive counts from others
     for (int p = 0; p < P; p++) {
       if (p != rank) {
         MPI_Recv(
@@ -141,8 +141,11 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       }
     }
     CALI_MARK_END(mpi_recv);
+    CALI_MARK_END(comm_large);
+    CALI_MARK_END(comm);
 
     // calculate new size based on values received from all processes
+    CALI_MARK_BEGIN(comp);
     int new_size = 0;
     for (int j = 0; j < l_B; j++) {
       int idx = j + rank * l_B;
@@ -152,6 +155,7 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       }
     }
 
+    CALI_MARK_BEGIN(comp_large);
     // reallocate array if newly calculated size is larger
     if (new_size > *n) {
       int* temp = (int*)realloc(a, new_size*sizeof(int));
@@ -164,7 +168,11 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       // reassign pointer back to original
       a = temp;
     }
+    CALI_MARK_END(comm_large);
+    CALI_MARK_END(comp);
 
+    CALI_MARK_BEGIN(comm);
+    CALI_MARK_BEGIN(comm_large);
     CALI_MARK_BEGIN(mpi_send);
     // send keys of this process to others
     for (int j = 0; j < B; j++) {
@@ -214,12 +222,12 @@ int* radix_sort(int *a, List* buckets, const int P, const int rank, int * n) {
       }
     }
     CALI_MARK_END(mpi_recv);
+    CALI_MARK_END(comm_large);
+    CALI_MARK_END(comm);
 
     // update new size
     *n = new_size;
-    CALI_MARK_END(comm_large);
   }
-  CALI_MARK_END(comp_large);
 
   return a;
 }
@@ -292,11 +300,13 @@ int main(int argc, char** argv) {
   }
   CALI_MARK_END(data_init);
 
-  CALI_MARK_BEGIN(comm);
   // let all processes get here
+  CALI_MARK_BEGIN(comm);
+  CALI_MARK_BEGIN(mpi_barrier);
   MPI_Barrier(MPI_COMM_WORLD);
+  CALI_MARK_END(mpi_barrier);
+  CALI_MARK_END(comm);
 
-  CALI_MARK_BEGIN(comp);
   // then run the sorting algorithm
   a = radix_sort(&a[0], buckets, size, rank, &n);
 
@@ -305,10 +315,12 @@ int main(int argc, char** argv) {
     MPI_Finalize();
     return EXIT_FAILURE;
   }
-  CALI_MARK_END(comp);
 
   // wait for all processes to finish before printing results 
+  CALI_MARK_BEGIN(comm);
+  CALI_MARK_BEGIN(mpi_barrier);
   MPI_Barrier(MPI_COMM_WORLD);
+  CALI_MARK_END(mpi_barrier);
   CALI_MARK_END(comm);
 
 
