@@ -170,13 +170,8 @@ int main(int argc, char** argv) {
 	MPI_Barrier(MPI_COMM_WORLD);
     CALI_MARK_END(MPIbarrier);
 	// CALI_MARK_END(main_loop);
-	mgr.stop();
-   	mgr.flush();
-
-	MPI_Finalize();
-    
-
-    
+	
+	
 
 
     adiak::init(NULL);
@@ -196,6 +191,9 @@ int main(int argc, char** argv) {
     adiak::value("group_num", "7"); // The number of your group (integer, e.g., 1, 10)
     adiak::value("implementation_source", "Online: https://github.com/racorretjer/Parallel-Merge-Sort-with-MPI/blob/master/merge-mpi.c"); // Where you got the source code of your algorithm; choices: ("Online", "AI", "Handwritten").
 
+	mgr.stop();
+   	mgr.flush();
+	MPI_Finalize();
 		
 	
 }
