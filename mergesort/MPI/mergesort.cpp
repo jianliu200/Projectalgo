@@ -15,35 +15,58 @@
 void merge(int *, int *, int, int, int);
 void mergeSort(int *, int *, int, int);
 
-const char* main_loop = "main loop";
+// const char* main_loop = "main loop";
 const char* comm =  "comm";
 const char* comm_large = "comm_large";
 const char* comp = "comp";
 const char* comp_large = "comp_large";
-const char* MPIbarrier = "MPIbarrier";
-const char* MPIscatter = "MPIscatter";
-const char* MPIgather = "MPIgather";
+const char* MPIbarrier = "MPI_Barrier";
+const char* MPIscatter = "MPI_Scatter";
+const char* MPIgather = "MPI_Gather"; 	
 const char* data_init = "data_init";
-const char* correctness = "correctness";
+const char* correctness_check = "correctness_check";
 int main(int argc, char** argv) {
 	CALI_CXX_MARK_FUNCTION;
 	/********** Create and populate the array **********/
 	cali::ConfigManager mgr;
 	mgr.start();
-    CALI_MARK_BEGIN(main_loop);
+    // CALI_MARK_BEGIN(main_loop);
+	// int num_threads = atoi(argv[1]);
 	int n = atoi(argv[1]);
+	printf("The size of the array is: %d", n);
+	printf("\n");
+	// printf("The number of threads is: %d", num_threads);
+	// printf("\n");
 	int *original_array = (int*)malloc(n * sizeof(int));
 	
 	int c;
 	srand(time(NULL));
 	printf("This is the unsorted array: ");
     CALI_MARK_BEGIN(data_init);
-	for(c = 0; c < n; c++) {
+	// For random
+	// for(c = 0; c < n; c++) {
 		
-		original_array[c] = rand() % n;
-		printf("%d ", original_array[c]);
+	// 	original_array[c] = rand() % n;
+	// 	//printf("%d ", original_array[c]);
+		
+	// 	}
+
+	// for sorted arrays
+	// for(c = 0; c < n; c++) {
+		
+	// 	original_array[c] = c;
+	// 	//printf("%d ", original_array[c]);
+		
+	// 	}
+
+	// for reverse sorted arrays
+	for(c = n -1 ; c >= 0; c--) {
+		
+		original_array[c] = c;
+		//printf("%d ", original_array[c]);
 		
 		}
+	
     CALI_MARK_END(data_init);
 	printf("\n");
 	printf("\n");
@@ -56,7 +79,12 @@ int main(int argc, char** argv) {
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-		
+
+	// if(num_threads > 0){
+	// 	world_size = num_threads;
+	// }
+	printf("The world_size is: %d", world_size);
+	printf("\n");
 	/********** Divide the array in equal-sized chunks **********/
 	int size = n/world_size;
 	
@@ -67,6 +95,8 @@ int main(int argc, char** argv) {
     CALI_MARK_BEGIN(MPIscatter);
 	MPI_Scatter(original_array, size, MPI_INT, sub_array, size, MPI_INT, 0, MPI_COMM_WORLD);
 	CALI_MARK_END(MPIscatter);
+	CALI_MARK_END(comm_large);
+	CALI_MARK_END(comm);
 	/********** Perform the mergesort on each process **********/
 	int *tmp_array = (int*)malloc(size * sizeof(int));
 	CALI_MARK_BEGIN(comp);
@@ -74,6 +104,9 @@ int main(int argc, char** argv) {
 	mergeSort(sub_array, tmp_array, 0, (size - 1));
 	CALI_MARK_END(comp_large);
 	CALI_MARK_END(comp);
+
+	CALI_MARK_BEGIN(comm);
+	CALI_MARK_BEGIN(comm_large);
 	/********** Gather the sorted subarrays into one **********/
 	int *sorted = NULL;
 	if(world_rank == 0) {
@@ -95,15 +128,15 @@ int main(int argc, char** argv) {
 		
 		/********** Display the sorted array **********/
 		printf("This is the sorted array: ");
-		for(c = 0; c < n; c++) {
+		// for(c = 0; c < n; c++) {
 			
-			printf("%d ", sorted[c]);
+		// 	printf("%d ", sorted[c]);
 			
-			}
+		// 	}
 		
-		CALI_MARK_BEGIN(correctness);
+		CALI_MARK_BEGIN(correctness_check);
 		bool sorting = std::is_sorted(sorted, sorted + n);
-		CALI_MARK_END(correctness);
+		CALI_MARK_END(correctness_check);
 		if(sorting == true) {
 			printf("\n");
 			printf("\n");
@@ -136,7 +169,7 @@ int main(int argc, char** argv) {
     CALI_MARK_BEGIN(MPIbarrier);
 	MPI_Barrier(MPI_COMM_WORLD);
     CALI_MARK_END(MPIbarrier);
-	CALI_MARK_END(main_loop);
+	// CALI_MARK_END(main_loop);
 	mgr.stop();
    	mgr.flush();
 
