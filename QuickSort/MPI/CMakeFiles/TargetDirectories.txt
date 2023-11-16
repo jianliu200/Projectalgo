@@ -1,0 +1,3 @@
+/scratch/user/mathewa11/Projectalgo/QuickSort/MPI/CMakeFiles/rebuild_cache.dir
+/scratch/user/mathewa11/Projectalgo/QuickSort/MPI/CMakeFiles/edit_cache.dir
+/scratch/user/mathewa11/Projectalgo/QuickSort/MPI/CMakeFiles/quicksort.dir
