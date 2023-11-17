@@ -1,18 +1,20 @@
 # CSCE 435 Group project
 
-## 0. Group number: 
+## 0. Group number:
 
 ## 1. Group members:
+
 1. Jiangyuan Liu
 2. Akhil Mathew
 3. Jacob Thomas
 4. Ashwin Kundeti
 
-The way our team is communicating is by using Discord and iMessages
----
+## The way our team is communicating is by using Discord and iMessages
 
 ## 2. _due 10/25_ Project topic
+
 For our project topic, we are going to be exploring parellel algoithm for sorting.
+
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
 
 Merge Sort (MPI)
@@ -27,13 +29,12 @@ Quick Sort (CUDA)
 Bitonic Sort (MPI)
 Bitonic Sort (CUDA)
 
-
 ### 2b. Pseudocode for each parallel algorithm
 
 1. Merge sort
 
 ```
-For MPI implimentation: 
+For MPI implimentation:
 
 function parallelMergeSort(array):
   if MPI parent:
@@ -142,6 +143,7 @@ https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
 ChatGPT: https://chat.openai.com/
 
 2. Bitonic sort
+
 ```
 Pseudocode:
 Bitonic sort (MPI):
@@ -150,15 +152,15 @@ bitonic_sort(A, direction):
     if n > 1:
         // Split data among processes
         local_A = split_data(A, A_size)
-        
+
         Bitonic_sort(local_A, direction) // Top half
         Bitonic_sort(local_A, direction) // Bottom half
-        
+
         // Synchronize before merging
         MPI_Barrier(MPI_COMM_WORLD)
-        
+
         Merge(local_A, direction) // Merge the first and second half
-        
+
         // Synchronize after merging
         MPI_Barrier(MPI_COMM_WORLD)
     end
@@ -183,23 +185,25 @@ Main (MPI):
         A = initialize_data(A_size)
     MPI_Bcast(A, A_size, MPI_INT, 0, MPI_COMM_WORLD) // Broadcast 'A' to all processes
     bitonic_sort(A, direction) // Perform the bitonic sort
-    
+
     // Gather sorted data to rank 0
     All_A = gather_data(A, A_size)
-    
+
     If rank == 0:
         Merge (MPI, All_A, direction) // Merge sorted data on rank 0
         Print sorted result
     MPI_Finalize() // Finalize MPI
 End
 ```
+
 source 1: https://www.baeldung.com/cs/bitonic-sort
 
 source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 CUDA
+
 ```
-// Kernel function to perform bitonic sort 
+// Kernel function to perform bitonic sort
 function bitonicSortKernel(values, j, k):
   // same as before
 
@@ -208,33 +212,35 @@ function cudaBitonicSort(values, size):
 
   // Allocate memory on GPU
   dev_values = cudaMalloc(size * sizeof(int))
-  
+
   // Copy values to GPU
   cudaMemcpy(dev_values, values, size * sizeof(int), cudaMemcpyHostToDevice)
-  
+
   // Define block size and grid size
   // same as before
-  
+
   // Loop over stages
   for k = 2 to size by powers of 2:
     for j = k/2 down to 1:
       launch bitonicSortKernel with grid_size blocks and block_size threads per block,
         passing dev_values, j, and k
-        
+
       cudaDeviceSynchronize() // wait for kernel to finish
 
-  // Copy sorted data back to CPU  
+  // Copy sorted data back to CPU
   cudaMemcpy(values, dev_values, size * sizeof(int), cudaMemcpyDeviceToHost)
-  
+
   // Free GPU memory
   cudaFree(dev_values)
 ```
+
 source 1: https://codepal.ai/code-generator/query/15oCYvGw/bitonic-sort-cuda
 
 source 2: https://claude.ai/
 
 3. Quicksort
-MPI
+   MPI
+
 ```
 procedure parallel_quicksort(A[1...n])
   begin
@@ -278,6 +284,7 @@ procedure quicksort(A[1...n], n)
 ```
 
 CUDA
+
 ```
 procedure cuda_quicksort(A[1...n])
   begin
@@ -329,6 +336,7 @@ __global__ void cuda_quicksort_kernel(int* A, int n)
 https://chat.openai.com
 
 4. Radix Sort
+
 ```
 Radix-Sort (MPI, A, d):
     // It works similarly to Counting Sort for d number of passes.
@@ -374,7 +382,9 @@ Radix-Sort (MPI, A, d):
     MPI_Finalize() // Finalize MPI
 End
 ```
+
 CUDA
+
 ```
 Define constants:
     WSIZE = 32
@@ -431,6 +441,7 @@ Define main function:
 
     Return 0
 ```
+
 Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
 Source 2: https://github.com/ufukomer/cuda-radix-sort/blob/master/docs/Radix%20Sort%20Analyses%20in%20Parallel%20and%20Serial%20Way.pdf
 Source 3: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
@@ -440,4 +451,103 @@ Source 3: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.co
 The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
 
 ## 3. Project implementation
+
 We were unable to gather the required .cali files due to maintenance being performed on Grace. We had scheduled to finish this assignment on Wednesday but due to unforeseen circumstances, we were unable to finish.
+
+## 4. Performance evaluation
+
+Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
+
+Bitonic MPI Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376130011186/mpi-bitonic-sorted.png?ex=65690e5d&is=6556995d&hm=a1e5d2ae2cda119a6426f1d2daf91251f6fa47afe04c55f4cf74523f1edc4a69&=&width=1328&height=834)
+
+Bitonic MPI Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376364912710/mpi-bitonic-reverse.png?ex=65690e5d&is=6556995d&hm=69272097ee57666d467a59b3cfef1818ac83ac6675e252906ba72a28f3b249d1&=&width=1436&height=828)
+
+Bitonic MPI Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376591401050/mpi-bitonic-random.png?ex=65690e5d&is=6556995d&hm=b47941dafdde81a07f4ef0b946e14d8d4b4a04f06b3191829c582de718e8156f&=&width=1350&height=852)
+
+Bitonic CUDA Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376851431574/cuda-bitonic-sorted.png?ex=65690e5d&is=6556995d&hm=53596ea7baba02ee4e19813eb95eb3dce85efa777ee459e46a7f9ed2f0bb3700&=&width=1352&height=842)
+
+Bitonic CUDA Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840377107304559/cuda-bitonic-reverse.png?ex=65690e5d&is=6556995d&hm=44ad4426fdd0c6977f8a27a054becf4fdbbac47e4a2e11fca29ee3f5a8b3e429&=&width=1526&height=830)
+
+Bitonic CUDA Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840377396707338/cuda-bitonic-random.png?ex=65690e5d&is=6556995d&hm=579f022d5d7983197fd4bdf3c4e228da12bfac14de1934da9cff4ad43bcd0e4b&=&width=1454&height=854)
+
+Radix MPI Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873515925716992/sorted.png?ex=65692d3a&is=6556b83a&hm=03f0e8af8293af5db24d5b91d6c193e604538101e724c13d7203c5504d94e212&=&width=866&height=558)
+
+Radix MPI Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873516147998730/reverse.png?ex=65692d3a&is=6556b83a&hm=e5c1cf168c7f8e567d48f0e9474a670da704bc49407d3e83730e5a27a0d76c83&=&width=882&height=560)
+
+Radix MPI Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873515439173632/random.png?ex=65692d3a&is=6556b83a&hm=77da49d67c7448013385236067f047e7e1a2d340509790885010c7580c0213d0&=&width=910&height=572)
+
+Radix CUDA Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833913512857662/Screenshot_2023-11-16_at_4.10.08_PM.png?ex=65690858&is=65569358&hm=539eb011574d70b4280f64b52bf4a529f7180d89e78f0610ae3ae43ccec4b463&=&width=894&height=552)
+
+Radix CUDA Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833912984387644/Screenshot_2023-11-16_at_4.08.22_PM.png?ex=65690858&is=65569358&hm=11e7663ea4c41c4f11a4de9a2f08290de59a30d7c5c86389e67362fa7b593d9b&=&width=910&height=564)
+
+Radix CUDA Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833913273798778/Screenshot_2023-11-16_at_4.09.18_PM.png?ex=65690858&is=65569358&hm=a1bd260c5940e5a9debe709c69a68f05c0046425f9493b9563da80bbcf94d84e&=&width=910&height=560)
+
+Merge MPI Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785541533796/MPI_sorted_merge_sort.png?ex=65692e68&is=6556b968&hm=3c8d491772b87ff3f4841893f32f441337dd39b4c88c1fd15af52961a593792e&=&width=1154&height=706)
+
+Merge MPI Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785294073856/MPI_reverse_merge_sort.png?ex=65692e68&is=6556b968&hm=c517640aa1582651d2751b20cac115e4c82e52293ddf7f6c6d711583d2fba5a5&=&width=1146&height=686)
+
+Merge MPI Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785063374908/MPI_random_merge_sort.png?ex=65692e68&is=6556b968&hm=3111687f01c00bfaf18a50a4c976881bf1850ee9f25a5f3611516be99259d5c7&=&width=1124&height=692)
+
+Merge CUDA Sorted:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784815919124/CUDA_sorted_merge_sort.png?ex=65692e68&is=6556b968&hm=4d8afac57574e3184defb15695db3352b3cb4fff47b77dc29de811f474d879d8&=&width=1144&height=704)
+
+Merge CUDA Reverse:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784585236562/CUDA_reverse_merge_sort.png?ex=65692e68&is=6556b968&hm=606a3a6b106cdd2789a4cf5c5f470074aa050c336682a217b7778e121e18a701&=&width=1156&height=682)
+
+Merge CUDA Random:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784149016586/CUDA_random_merge_sort.png?ex=65692e68&is=6556b968&hm=444725e4353f3f7b24e0185929c92f4157a6b2e6cff3dc0aa5576e86cf0c510b&=&width=1192&height=694)
+
+Quick MPI:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174872867226263673/image.png?ex=65692c9f&is=6556b79f&hm=6ebc2490823c0ec2f279776d2650fd3cfcae70a7179ee3c5b96bc20efcb126ac&=&width=1050&height=704)
+
+Quick CUDA:
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174871784831590491/image.png?ex=65692b9d&is=6556b69d&hm=78e309c8a4a600adb2151d46f26a63177254d5084e40f0f1a4c2ad71b07fb986&=&width=1100&height=702)
+
+When looking at the graphs above, we see that as we increase the number of processes, we see a significant decrease in the amount of time it takes for the algorithm to complete for MPI codes, in general. We see this same pattern occuring within our CUDA files because when we increase the number of threads used for each algorithm, we observe a noticable decrease in the time taken for the algorithm to sort the numbers.
+
+We wanted to ensure that this was the case for all types of arrays, so we decided to run all algorithms on a randomly generated array, reverse sorted array, and a sorted array. When running our algorithm on these types of input arrays, we saw that the pattern we noticed before was upheld and stayed true throughout.
+
+## 4a and 4b. Vary the following parameters
+
+When running our tests, these were our parameters for all algorithms.
+For MPI, we ran the following script:
+
+```
+for num_proc in 2 4 8 16 32 64; do
+    for size in 65536 262144 1048576 4194304 16777216 67108864; do
+        sbatch mpi.grace_job "$size" "$num_proc"
+        echo "ran for process $num_proc at size $size"
+    done
+done
+```
+
+For CUDA, we ran the following script:
+
+```
+for num_proc in 64 128 256 512; do
+    for size in 65536 262144 1048576 4194304 16777216 67108864; do
+        sbatch bitonic.grace_job "$size" "$num_proc"
+    done
+done
+```
+
+## 4c.
+
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174867022673362944/Screenshot_2023-11-16_at_6.21.59_PM.png?ex=6569272e&is=6556b22e&hm=c7bb920115f750f0bea058ae3fc8eaa4df1d0121b40801ae2ad56ba371886a20&=&width=1832&height=652)
+
+Above is an example our performance metrics. This is similar for all implementations with the same structure as we used the average time for each function.
