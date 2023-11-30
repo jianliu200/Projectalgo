@@ -62,9 +62,10 @@ int main(int argc, char** argv) {
     srand(time(0));
 
     CALI_MARK_BEGIN(data_init);
-    // for random input
+    //for random input
     // for (int i = 0; i < size; ++i) {
     //     nums[i] = rand() % size;
+    //     printf("%d ", nums[i]);
     // }
 
     // for sorted input
@@ -115,10 +116,11 @@ int main(int argc, char** argv) {
     CALI_MARK_END(comm);
 
     // 打印结果
-    // for (int i = 0; i < size; ++i) {
-    //     printf("%d ", nums[i]);
-    // }
-    // printf("\n");
+    printf("--------------------\n");
+    for (int i = 0; i < size; ++i) {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
     CALI_MARK_BEGIN(correctness_check);
     bool sorting = std::is_sorted(nums, nums + size);
     CALI_MARK_END(correctness_check);
@@ -159,7 +161,7 @@ int main(int argc, char** argv) {
     adiak::value("Datatype", "int"); // The datatype of input elements (e.g., double, int, float)
     adiak::value("SizeOfDatatype", "4 bytes"); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
     adiak::value("InputSize", size); // The number of elements in input dataset (1000)
-    adiak::value("InputType", "Random"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
+    adiak::value("InputType", "Reverse"); // For sorting, this would be "Sorted", "ReverseSorted", "Random", "1%perturbed"
     //adiak::value("num_procs", world_size); // The number of processors (MPI ranks)
     adiak::value("num_threads", threadsize); // The number of CUDA or OpenMP threads
     adiak::value("num_blocks", blocknum); // The number of CUDA blocks 
