@@ -1028,6 +1028,17 @@ For Reverse Input:
 ![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-comp_largeRegion-ReverseSortedInput.png)
 
+## Comparison
+
+### MPI:
+
+![MPI main](/comparison/mpi.png)
+
+### CUDA:
+
+![CUDA main](/comparison/cuda.png)
+
+
 ## 4a and 4b. Vary the following parameters
 
 When running our tests, these were our parameters for all algorithms.
