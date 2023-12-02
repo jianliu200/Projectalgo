@@ -458,34 +458,49 @@ We were unable to gather the required .cali files due to maintenance being perfo
 
 Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
 
-### Mergesort 
+## Mergesort 
 
 #### CUDA with strong scaling:
 
 For 655336:
 
-
+![65536 main](https://i.imgur.com/NNj6YKU.png)
+![65536 comp large](https://i.imgur.com/vQ6cHCJ.png)
+![65536 comm](https://i.imgur.com/ij2RlBl.png)
 
 For 262144: 
 
+![262144 main](https://i.imgur.com/NpRF5vD.png)
+![262144 comp_large](https://i.imgur.com/BqNV04O.png)
+![262144 comm](https://i.imgur.com/YP56LQZ.png)
 
 
 For 1048576:
 
+![1048576 main](https://i.imgur.com/LMW12lq.png)
+![1048576 comp large](https://i.imgur.com/JRTcjxI.png)
+![1048576 comm](https://i.imgur.com/muqCp4p.png)
 
 
 For 4194304:
 
+![4194304 main](https://i.imgur.com/OPCFXxN.png)
+![4194304 comp large](https://i.imgur.com/Q4yQOeA.png)
+![4194304 comm](https://i.imgur.com/Ia8oGoF.png)
 
 
 For 16777216:
 
+![16777216 main](https://i.imgur.com/yydChOq.png)
+![16777216 comp large](https://i.imgur.com/tMUw1ca.png)
+![16777216 comm](https://i.imgur.com/LY9o3WP.png)
 
 
-For 67108861:
+For 67108864:
 
-
-
+![67108864 main](https://i.imgur.com/7dgyTqd.png)
+![67108864 comp large](https://i.imgur.com/xq36iOM.png)
+![67108864 comm](https://i.imgur.com/Pprjclx.png)
 
 
 
@@ -493,13 +508,26 @@ For 67108861:
 
 For Random:
 
-
+![Imgur](https://i.imgur.com/CHNm72S.png)
+![Random comp large](https://i.imgur.com/dFNIE2E.png)
+![Imgur](https://i.imgur.com/gwKP41I.png)
 
 For Reverse: 
 
-
+![Imgur](https://i.imgur.com/ROhwwRF.png)
+![Reverse comp large](https://i.imgur.com/JiHheXc.png)
+![Reverse comm](https://i.imgur.com/Z82ekcj.png)
 
 For Sorted:
+
+![Imgur](https://i.imgur.com/6gex3EN.png)
+![sorted comp_lage](https://i.imgur.com/pmLuvLH.png)
+![sorted comm](https://i.imgur.com/fUo3A9I.png)
+
+
+
+
+
 
 
 
@@ -507,14 +535,21 @@ For Sorted:
 
 For Random:
 
-
+![Random main](https://i.imgur.com/SXtarsG.png)
+![Random comp large](https://i.imgur.com/r2W8p1G.png)
+![Random comm](https://i.imgur.com/zAS0B8S.png)
 
 For Reverse:
 
-
+![Reverse](https://i.imgur.com/jUcEcAf.png)
+![Reverse comp large](https://i.imgur.com/1IlStzq.png)
+![Reverse comm](https://i.imgur.com/rl5reSz.png)
 
 For Sorted:
 
+![Sorted main](https://i.imgur.com/dSsAwDR.png)
+![Sorted comp large](https://i.imgur.com/sP9Cbom.png)
+![Sorted comm](https://i.imgur.com/1TtxX7w.png)
 
 
 
@@ -522,6 +557,98 @@ For Sorted:
 `
 
 #### MPI with strong scaling:
+
+For 65536:
+
+![65536 main](https://i.imgur.com/gcYvOLq.png)
+![65536 comp large](https://i.imgur.com/mmKRdYP.png)
+![65536 comm](https://i.imgur.com/gdq2CVP.png)
+
+For 262144:
+
+![262144 main](https://i.imgur.com/wyyAVRw.png)
+![262144 comp large](https://i.imgur.com/ajG8TzY.png)
+![262144 comm](https://i.imgur.com/G2VC4ed.png)
+
+For 1048576:
+
+![1048576 main](https://i.imgur.com/MNmzLW4.png)
+![1048576 comp large](https://i.imgur.com/Mgt06Xc.png)
+![1048576 comm](https://i.imgur.com/mEE2k5k.png)
+
+For 4194304:
+
+![4194304 main](https://i.imgur.com/BGv8igX.png)
+![4194304 comp large](https://i.imgur.com/3OZQebK.png)
+![4194304 comm](https://i.imgur.com/uYf27ES.png)
+
+For 16777216:
+
+![16777216 main](https://i.imgur.com/Jj0V9Hg.png)
+![16777216 comp large](https://i.imgur.com/XKOxj6m.png)
+![16777216 comm](https://i.imgur.com/3VzIzPl.png)
+
+For 67108864:
+
+![67108864 main](https://i.imgur.com/hM2I9p4.png)
+![67108864 comp large](https://i.imgur.com/nRylWOg.png)
+![67108864 comm](https://i.imgur.com/bfTIrSn.png)
+
+For 268435456:
+
+![268435456 main](https://i.imgur.com/MV5F080.png)
+![268435456 comp large](https://i.imgur.com/SpeF8Fo.png)
+![268435456 comm](https://i.imgur.com/IRfYNVk.png)
+
+
+
+#### MPI with weak scaling:
+
+For Random:
+
+![Random main](https://i.imgur.com/6bbbS2u.png)
+![Random comp large](https://i.imgur.com/zYSkfLe.png)
+![Random comm](https://i.imgur.com/KHiCCtf.png)
+
+For Reverse:
+
+![Reverse main](https://i.imgur.com/cXipYBr.png)
+![Reverse comp large](https://i.imgur.com/IOe5j37.png)
+![Reverse comm](https://i.imgur.com/UZa9NEQ.png)
+
+For Sorted:
+
+![Sorted main](https://i.imgur.com/yCR7QuO.png)
+![Sorted comp large](https://i.imgur.com/AjNOutz.png)
+![Sorted comm](https://i.imgur.com/7870HUz.png)
+
+
+
+
+#### MPI with speedup:
+
+For Random:
+
+![Random main](https://i.imgur.com/8YCJHIj.png)
+![Random comp large](https://i.imgur.com/DgcuYeo.png)
+![Random comm](https://i.imgur.com/2jOEITc.png)
+
+For Reverse:
+
+![Reverse main](https://i.imgur.com/hVkZH7K.png)
+![Reverse comp large](https://i.imgur.com/s2CrRd7.png)
+![Reverse comm](https://i.imgur.com/vaKgkVP.png)
+
+For Sorted:
+
+![Sorted main](https://i.imgur.com/eIazqj2.png)
+![Sorted comp large](https://i.imgur.com/6r6Z3DP.png)
+![Sorted comm](https://i.imgur.com/Q7WBcRm.png)
+
+
+
+
+
 
 
 
