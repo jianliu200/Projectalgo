@@ -587,7 +587,35 @@ For 655336:
 
 For 262144:
 
+![262144 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-262144Size.png)
+![262144 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-262144Size.png)
+![262144 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-262144Size.png)
 
+For 1048576:
+
+![1048576 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-RandomInput-1048576Size.png)
+![1048576 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-RandomInput-1048576Size.png)
+![1048576 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-RandomInput-1048576Size.png)
+
+For 4194304:
+
+![4194304 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-4194304Size.png)
+![4194304 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-4194304Size.png)
+![4194304 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-4194304Size.png)
+
+For 16777216:
+
+![16777216 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-16777216Size.png)
+![16777216 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-16777216Size.png)
+![16777216 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-16777216Size.png)
+
+for 67108864:
+
+![67108864 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-67108864Size.png)
+![67108864 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-67108864Size.png)
+![67108864 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-67108864Size.png)
+
+#### Weak Scaling:
 
 
 ### Quick Sort
