@@ -1,18 +1,20 @@
 # CSCE 435 Group project
 
-## 0. Group number: 
+## 0. Group number:
 
 ## 1. Group members:
+
 1. Jiangyuan Liu
 2. Akhil Mathew
 3. Jacob Thomas
 4. Ashwin Kundeti
 
-The way our team is communicating is by using Discord and iMessages
----
+## The way our team is communicating is by using Discord and iMessages
 
 ## 2. _due 10/25_ Project topic
+
 For our project topic, we are going to be exploring parellel algoithm for sorting.
+
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
 
 Merge Sort (MPI)
@@ -27,13 +29,12 @@ Quick Sort (CUDA)
 Bitonic Sort (MPI)
 Bitonic Sort (CUDA)
 
-
 ### 2b. Pseudocode for each parallel algorithm
 
 1. Merge sort
 
 ```
-For MPI implimentation: 
+For MPI implimentation:
 
 function parallelMergeSort(array):
   if MPI parent:
@@ -142,6 +143,7 @@ https://www.sjsu.edu/people/robert.chun/courses/cs159/s3/T.pdf
 ChatGPT: https://chat.openai.com/
 
 2. Bitonic sort
+
 ```
 Pseudocode:
 Bitonic sort (MPI):
@@ -150,15 +152,15 @@ bitonic_sort(A, direction):
     if n > 1:
         // Split data among processes
         local_A = split_data(A, A_size)
-        
+
         Bitonic_sort(local_A, direction) // Top half
         Bitonic_sort(local_A, direction) // Bottom half
-        
+
         // Synchronize before merging
         MPI_Barrier(MPI_COMM_WORLD)
-        
+
         Merge(local_A, direction) // Merge the first and second half
-        
+
         // Synchronize after merging
         MPI_Barrier(MPI_COMM_WORLD)
     end
@@ -183,23 +185,25 @@ Main (MPI):
         A = initialize_data(A_size)
     MPI_Bcast(A, A_size, MPI_INT, 0, MPI_COMM_WORLD) // Broadcast 'A' to all processes
     bitonic_sort(A, direction) // Perform the bitonic sort
-    
+
     // Gather sorted data to rank 0
     All_A = gather_data(A, A_size)
-    
+
     If rank == 0:
         Merge (MPI, All_A, direction) // Merge sorted data on rank 0
         Print sorted result
     MPI_Finalize() // Finalize MPI
 End
 ```
+
 source 1: https://www.baeldung.com/cs/bitonic-sort
 
 source 2: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
 
 CUDA
+
 ```
-// Kernel function to perform bitonic sort 
+// Kernel function to perform bitonic sort
 function bitonicSortKernel(values, j, k):
   // same as before
 
@@ -208,33 +212,35 @@ function cudaBitonicSort(values, size):
 
   // Allocate memory on GPU
   dev_values = cudaMalloc(size * sizeof(int))
-  
+
   // Copy values to GPU
   cudaMemcpy(dev_values, values, size * sizeof(int), cudaMemcpyHostToDevice)
-  
+
   // Define block size and grid size
   // same as before
-  
+
   // Loop over stages
   for k = 2 to size by powers of 2:
     for j = k/2 down to 1:
       launch bitonicSortKernel with grid_size blocks and block_size threads per block,
         passing dev_values, j, and k
-        
+
       cudaDeviceSynchronize() // wait for kernel to finish
 
-  // Copy sorted data back to CPU  
+  // Copy sorted data back to CPU
   cudaMemcpy(values, dev_values, size * sizeof(int), cudaMemcpyDeviceToHost)
-  
+
   // Free GPU memory
   cudaFree(dev_values)
 ```
+
 source 1: https://codepal.ai/code-generator/query/15oCYvGw/bitonic-sort-cuda
 
 source 2: https://claude.ai/
 
 3. Quicksort
-MPI
+   MPI
+
 ```
 procedure parallel_quicksort(A[1...n])
   begin
@@ -278,6 +284,7 @@ procedure quicksort(A[1...n], n)
 ```
 
 CUDA
+
 ```
 procedure cuda_quicksort(A[1...n])
   begin
@@ -329,6 +336,7 @@ __global__ void cuda_quicksort_kernel(int* A, int n)
 https://chat.openai.com
 
 4. Radix Sort
+
 ```
 Radix-Sort (MPI, A, d):
     // It works similarly to Counting Sort for d number of passes.
@@ -374,7 +382,9 @@ Radix-Sort (MPI, A, d):
     MPI_Finalize() // Finalize MPI
 End
 ```
+
 CUDA
+
 ```
 Define constants:
     WSIZE = 32
@@ -431,6 +441,7 @@ Define main function:
 
     Return 0
 ```
+
 Source 1: https://www.codingeek.com/algorithms/radix-sort-explanation-pseudocode-and-implementation/
 Source 2: https://github.com/ufukomer/cuda-radix-sort/blob/master/docs/Radix%20Sort%20Analyses%20in%20Parallel%20and%20Serial%20Way.pdf
 Source 3: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
@@ -440,4 +451,243 @@ Source 3: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.co
 The way we want to compare the different versions of the code is by using CPU-only (MPI) and GPU-only (CUDA) and time it to see how long it takes for the cases to run. We are also going to be comparing them with the same task and see how only it takes for each one of them to run.
 
 ## 3. Project implementation
+
 We were unable to gather the required .cali files due to maintenance being performed on Grace. We had scheduled to finish this assignment on Wednesday but due to unforeseen circumstances, we were unable to finish.
+
+## 4. Performance evaluation
+
+Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
+
+### Mergesort 
+
+#### CUDA with strong scaling:
+
+For 655336:
+
+![65536 main](https://i.imgur.com/jcLdgiD.png)
+![65536 comp_large](https://i.imgur.com/oueRF89.png)
+![65536 comm](https://i.imgur.com/Y0rKtOX.png)
+
+For 262144: 
+
+![262144 main](https://i.imgur.com/XvuQNnI.png)
+![262144 comp_large](https://i.imgur.com/OlT1G4B.png)
+![262144 comm](https://i.imgur.com/Xdhr0U4.png)
+
+For 1048576:
+
+![1048576 main](https://i.imgur.com/fYWbyAJ.png)
+![1048576 comm](https://i.imgur.com/qlUQKW2.png)
+![1048576 comp_large](https://i.imgur.com/FHwrpvm.png)
+
+For 4194304:
+
+![4194304 main](https://i.imgur.com/CS3jV2C.png)
+![4194304 comp_large](https://i.imgur.com/xHTvGfH.png)
+![4194304 comm](https://i.imgur.com/8uyZO6X.png)
+
+For 16777216:
+
+![16777216 main](https://i.imgur.com/yImXNPN.png)
+![16777216 comp_large](https://i.imgur.com/CXuM96N.png)
+![16777216 comm](https://i.imgur.com/mAg8ZIi.png)
+
+For 67108861:
+
+![67108864 main](https://i.imgur.com/BigUGUa.png)
+![67108864 comp_large](https://i.imgur.com/N9XEID9.png)
+![67108864 comm](https://i.imgur.com/e0NOSii.png)
+
+## Radix Sort
+
+### MPI:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-65536Size.png)
+![65536 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-65536Size.png)
+![65536 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-65536Size.png)
+
+For 262144:
+
+![262144 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-262144Size.png)
+![262144 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-262144Size.png)
+![262144 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-262144Size.png)
+
+For 1048576:
+
+![1048576 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-SortedInput-1048576Size.png)
+![1048576 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-SortedInput-1048576Size.png)
+![1048576 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-SortedInput-1048576Size.png)
+
+For 4194304:
+
+![4194304 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-4194304Size.png)
+![4194304 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-4194304Size.png)
+![4194304 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-4194304Size.png)
+
+For 16777216:
+
+![16777216 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-ReverseInput-67108864Size.png)
+![16777216 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-ReverseInput-67108864Size.png)
+![16777216 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-ReverseInput-67108864Size.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-RandomInput.png)
+![Random comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-RandomInput.png)
+![Random comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-SortedInput.png)
+![Sorted comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
+
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-ReverseInput.png)
+
+### CUDA:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-65536Size.png)
+![65536 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-65536Size.png)
+![65536 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-65536Size.png)
+
+For 262144:
+
+![262144 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-262144Size.png)
+![262144 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-262144Size.png)
+![262144 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-262144Size.png)
+
+For 1048576:
+
+![1048576 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-RandomInput-1048576Size.png)
+![1048576 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-RandomInput-1048576Size.png)
+![1048576 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-RandomInput-1048576Size.png)
+
+For 4194304:
+
+![4194304 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-4194304Size.png)
+![4194304 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-4194304Size.png)
+![4194304 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-4194304Size.png)
+
+For 16777216:
+
+![16777216 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-16777216Size.png)
+![16777216 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-16777216Size.png)
+![16777216 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-16777216Size.png)
+
+for 67108864:
+
+![67108864 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-67108864Size.png)
+![67108864 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-67108864Size.png)
+![67108864 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-67108864Size.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-ReverseInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-ReverseInput.png)
+
+
+### Quick Sort
+
+### Bitonic Sort
+
+
+
+## 4a and 4b. Vary the following parameters
+
+When running our tests, these were our parameters for all algorithms.
+For MPI, we ran the following script:
+
+```
+for num_proc in 2 4 8 16 32 64; do
+    for size in 65536 262144 1048576 4194304 16777216 67108864; do
+        sbatch mpi.grace_job "$size" "$num_proc"
+        echo "ran for process $num_proc at size $size"
+    done
+done
+```
+
+For CUDA, we ran the following script:
+
+```
+for num_proc in 64 128 256 512; do
+    for size in 65536 262144 1048576 4194304 16777216 67108864; do
+        sbatch bitonic.grace_job "$size" "$num_proc"
+    done
+done
+```
+
+## 4c.
+
+![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174867022673362944/Screenshot_2023-11-16_at_6.21.59_PM.png?ex=6569272e&is=6556b22e&hm=c7bb920115f750f0bea058ae3fc8eaa4df1d0121b40801ae2ad56ba371886a20&=&width=1832&height=652)
+
+Above is an example our performance metrics. This is similar for all implementations with the same structure as we used the average time for each function.

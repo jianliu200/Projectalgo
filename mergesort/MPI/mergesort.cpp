@@ -44,12 +44,12 @@ int main(int argc, char** argv) {
 	printf("This is the unsorted array: ");
     CALI_MARK_BEGIN(data_init);
 	// For random
-	// for(c = 0; c < n; c++) {
+	for(c = 0; c < n; c++) {
 		
-	// 	original_array[c] = rand() % n;
-	// 	//printf("%d ", original_array[c]);
+		original_array[c] = rand() % n;
+		//printf("%d ", original_array[c]);
 		
-	// 	}
+		}
 
 	// for sorted arrays
 	// for(c = 0; c < n; c++) {
@@ -60,12 +60,12 @@ int main(int argc, char** argv) {
 	// 	}
 
 	// for reverse sorted arrays
-	for(c = n -1 ; c >= 0; c--) {
+	// for(c = n -1 ; c >= 0; c--) {
 		
-		original_array[c] = c;
-		//printf("%d ", original_array[c]);
+	// 	original_array[c] = c;
+	// 	//printf("%d ", original_array[c]);
 		
-		}
+	// 	}
 	
     CALI_MARK_END(data_init);
 	printf("\n");
