@@ -500,6 +500,24 @@ For 67108861:
 
 ### Radix Sort
 
+#### MPI Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-65536Size.png)
+![65536 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-65536Size.png)
+![65536 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-65536Size.png)
+
+For 262144:
+
+![262144 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-262144Size.png)
+![262144 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-262144Size.png)
+![262144 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-262144Size.png)
+
+For 1048576:
+![1048576 main](/Radix/MPI%20Pics/strong/
+
+
 ### Quick Sort
 
 ### Bitonic Sort
