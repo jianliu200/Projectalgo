@@ -458,7 +458,7 @@ We were unable to gather the required .cali files due to maintenance being perfo
 
 Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
 
-## Mergesort 
+## Mergesort
 
 #### CUDA with strong scaling:
 
@@ -474,13 +474,11 @@ For 262144:
 ![262144 comp_large](https://i.imgur.com/BqNV04O.png)
 ![262144 comm](https://i.imgur.com/YP56LQZ.png)
 
-
 For 1048576:
 
 ![1048576 main](https://i.imgur.com/LMW12lq.png)
 ![1048576 comp large](https://i.imgur.com/JRTcjxI.png)
 ![1048576 comm](https://i.imgur.com/muqCp4p.png)
-
 
 For 4194304:
 
@@ -488,21 +486,17 @@ For 4194304:
 ![4194304 comp large](https://i.imgur.com/Q4yQOeA.png)
 ![4194304 comm](https://i.imgur.com/Ia8oGoF.png)
 
-
 For 16777216:
 
 ![16777216 main](https://i.imgur.com/yydChOq.png)
 ![16777216 comp large](https://i.imgur.com/tMUw1ca.png)
 ![16777216 comm](https://i.imgur.com/LY9o3WP.png)
 
-
 For 67108864:
 
 ![67108864 main](https://i.imgur.com/7dgyTqd.png)
 ![67108864 comp large](https://i.imgur.com/xq36iOM.png)
 ![67108864 comm](https://i.imgur.com/Pprjclx.png)
-
-
 
 #### CUDA with weak scaling:
 
@@ -512,7 +506,7 @@ For Random:
 ![Random comp large](https://i.imgur.com/dFNIE2E.png)
 ![Imgur](https://i.imgur.com/gwKP41I.png)
 
-For Reverse: 
+For Reverse:
 
 ![Imgur](https://i.imgur.com/ROhwwRF.png)
 ![Reverse comp large](https://i.imgur.com/JiHheXc.png)
@@ -523,13 +517,6 @@ For Sorted:
 ![Imgur](https://i.imgur.com/6gex3EN.png)
 ![sorted comp_lage](https://i.imgur.com/pmLuvLH.png)
 ![sorted comm](https://i.imgur.com/fUo3A9I.png)
-
-
-
-
-
-
-
 
 #### CUDA with speedup:
 
@@ -550,8 +537,6 @@ For Sorted:
 ![Sorted main](https://i.imgur.com/dSsAwDR.png)
 ![Sorted comp large](https://i.imgur.com/sP9Cbom.png)
 ![Sorted comm](https://i.imgur.com/1TtxX7w.png)
-
-
 
 `
 `
@@ -600,8 +585,6 @@ For 268435456:
 ![268435456 comp large](https://i.imgur.com/SpeF8Fo.png)
 ![268435456 comm](https://i.imgur.com/IRfYNVk.png)
 
-
-
 #### MPI with weak scaling:
 
 For Random:
@@ -622,9 +605,6 @@ For Sorted:
 ![Sorted comp large](https://i.imgur.com/AjNOutz.png)
 ![Sorted comm](https://i.imgur.com/7870HUz.png)
 
-
-
-
 #### MPI with speedup:
 
 For Random:
@@ -644,19 +624,6 @@ For Sorted:
 ![Sorted main](https://i.imgur.com/eIazqj2.png)
 ![Sorted comp large](https://i.imgur.com/6r6Z3DP.png)
 ![Sorted comm](https://i.imgur.com/Q7WBcRm.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Radix Sort
 
@@ -713,7 +680,6 @@ For Reverse Input:
 ![Reverse main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-ReverseInput.png)
 ![Reverse comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
-
 
 #### Strong Scaling Speedup:
 
@@ -815,8 +781,96 @@ For Reverse Input:
 ![Reverse comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-ReverseInput.png)
 
-
 ### Quick Sort
+
+### MPI:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-65536Input.png)
+![65536 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-65536Input.png)
+
+For 262144:
+
+![262144 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-262144Input.png)
+![262144 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-262144Input.png)
+
+For 1048576:
+
+![1048576 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-1048576Input.png)
+![1048576 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-1048576Input.png)
+
+For 4194304:
+
+![4194304 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-4194304Input.png)
+![4194304 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-4194304Input.png)
+
+For 16777216:
+
+![16777216 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-16777216Input.png)
+![16777216 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-16777216Input.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-SortedInput.png)
+![Sorted comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-ReverseInput.png)
+![Reverse comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-ReverseInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-ReverseInput.png)
+
+### CUDA:
+
+#### Strong Scaling:
+
+For 4194304:
+
+![4194304 main](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-mainRegion-4194304Input.png)
+![4194304 comm](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-commRegion-4194304Input.png)
+![4194304 comp](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-comp_largeRegion-4194304Input.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-commRegion-RandomInput.png)
+![Random comp](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-comp_largeRegion-RandomInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-commRegion-RandomInput.png)
+![Random comp](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-comp_largeRegion-RandomInput.png)
 
 ## Bitonic Sort
 
@@ -873,7 +927,6 @@ For Reverse Input:
 ![Reverse main](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-mainRegion-ReverseSortedInput.png)
 ![Reverse comm](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-comp_largeRegion-ReverseSortedInput.png)
-
 
 #### Strong Scaling Speedup:
 
