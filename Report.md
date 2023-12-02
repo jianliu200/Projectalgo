@@ -458,7 +458,7 @@ We were unable to gather the required .cali files due to maintenance being perfo
 
 Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
 
-### Mergesort 
+### Mergesort
 
 #### CUDA with strong scaling:
 
@@ -468,7 +468,7 @@ For 655336:
 ![65536 comp_large](https://i.imgur.com/oueRF89.png)
 ![65536 comm](https://i.imgur.com/Y0rKtOX.png)
 
-For 262144: 
+For 262144:
 
 ![262144 main](https://i.imgur.com/XvuQNnI.png)
 ![262144 comp_large](https://i.imgur.com/OlT1G4B.png)
@@ -658,9 +658,162 @@ For Reverse Input:
 
 ### Quick Sort
 
-### Bitonic Sort
+## Bitonic Sort
+
+### MPI:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-RandomInput-2^16_numvals.png)
+![65536 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-RandomInput-2^16_numvals.png)
+![65536 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-RandomInput-2^16_numvals.png)
+
+For 262144:
+
+![262144 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-RandomInput-2^18_numvals.png)
+![262144 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-RandomInput-2^18_numvals.png)
+![262144 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-RandomInput-2^18_numvals.png)
+
+For 1048576:
+
+![1048576 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-SortedInput-2^20_numvals.png)
+![1048576 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-SortedInput-2^20_numvals.png)
+![1048576 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-SortedInput-2^20_numvals.png)
+
+For 4194304:
+
+![4194304 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-RandomInput-2^22_numvals.png)
+![4194304 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-RandomInput-2^22_numvals.png)
+![4194304 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-RandomInput-2^22_numvals.png)
+
+For 16777216:
+
+![16777216 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-ReverseInput-2^26_numvals.png)
+![16777216 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-ReverseInput-2^26_numvals.png)
+![16777216 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-ReverseInput-2^26_numvals.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Bitonic%20Sort/MPI/plots_mpiweak/bitonic-mpi-weak-mainRegion-RandomInput.png)
+![Random comm](/Bitonic%20Sort/MPI/plots_mpiweak/bitonic-mpi-weak-commRegion-RandomInput.png)
+![Random comp](/Bitonic%20Sort/MPI/plots_mpiweak/bitonic-mpi-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-commRegion-SortedInput.png)
+![Sorted comp](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-comp_largeRegion-ReverseInput.png)
 
 
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-commRegion-RandomInput.png)
+![Random comp](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Bitonic%20Sort/MPI/plots_mpi/speedup/bitonic-mpi-speedup-comp_largeRegion-ReverseInput.png)
+
+### CUDA:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-SortedInput-2^16_numvals.png)
+![65536 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-SortedInput-2^16_numvals.png)
+![65536 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-SortedInput-2^16_numvals.png)
+
+For 262144:
+
+![262144 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-ReverseInput-2^18_numvals.png)
+![262144 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-ReverseInput-2^18_numvals.png)
+![262144 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-ReverseInput-2^18_numvals.png)
+
+For 1048576:
+
+![1048576 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-RandomInput-2^20_numvals.png)
+![1048576 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-RandomInput-2^20_numvals.png)
+![1048576 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-RandomInput-2^20_numvals.png)
+
+For 4194304:
+
+![4194304 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-SortedInput-2^22_numvals.png)
+![4194304 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-SortedInput-2^22_numvals.png)
+![4194304 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-SortedInput-2^22_numvals.png)
+
+For 16777216:
+
+![16777216 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-ReverseInput-16777216Size.png)
+![16777216 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-ReverseInput-16777216Size.png)
+![16777216 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-ReverseInput-16777216Size.png)
+
+for 67108864:
+
+![67108864 main](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-mainRegion-ReverseInput-2^26_numvals.png)
+![67108864 comm](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-commRegion-ReverseInput-2^26_numvals.png)
+![67108864 comp](/Bitonic%20Sort/CUDA/plots_cuda/strong/bitonic-cuda-strong-comp_largeRegion-ReverseInput-2^26_numvals.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-mainRegion-RandomInput.png)
+![Random comm](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-commRegion-RandomInput.png)
+![Random comp](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-commRegion-SortedInput.png)
+![Sorted comp](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-comp_largeRegion-ReverseInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-mainRegion-RandomInput.png)
+![Random comm](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-commRegion-RandomInput.png)
+![Random comp](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-comp_largeRegion-ReverseInput.png)
 
 ## 4a and 4b. Vary the following parameters
 
