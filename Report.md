@@ -531,7 +531,82 @@ For Sorted:
 
 
 
-### Radix Sort
+## Radix Sort
+
+### MPI:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-65536Size.png)
+![65536 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-65536Size.png)
+![65536 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-65536Size.png)
+
+For 262144:
+
+![262144 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-262144Size.png)
+![262144 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-262144Size.png)
+![262144 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-262144Size.png)
+
+For 1048576:
+
+![1048576 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-SortedInput-1048576Size.png)
+![1048576 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-SortedInput-1048576Size.png)
+![1048576 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-SortedInput-1048576Size.png)
+
+For 4194304:
+
+![4194304 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-4194304Size.png)
+![4194304 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-4194304Size.png)
+![4194304 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-4194304Size.png)
+
+For 16777216:
+
+![16777216 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-ReverseInput-67108864Size.png)
+![16777216 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-ReverseInput-67108864Size.png)
+![16777216 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-ReverseInput-67108864Size.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-RandomInput.png)
+![Random comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-RandomInput.png)
+![Random comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-SortedInput.png)
+![Sorted comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/MPI%20Pics/weak/radix-mpi-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
+
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-ReverseInput.png)
 
 ### Quick Sort
 
