@@ -735,6 +735,87 @@ For Reverse Input:
 ![Reverse comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-ReverseInput.png)
 
+### CUDA:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-65536Size.png)
+![65536 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-65536Size.png)
+![65536 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-65536Size.png)
+
+For 262144:
+
+![262144 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-262144Size.png)
+![262144 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-262144Size.png)
+![262144 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-262144Size.png)
+
+For 1048576:
+
+![1048576 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-RandomInput-1048576Size.png)
+![1048576 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-RandomInput-1048576Size.png)
+![1048576 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-RandomInput-1048576Size.png)
+
+For 4194304:
+
+![4194304 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-4194304Size.png)
+![4194304 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-4194304Size.png)
+![4194304 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-4194304Size.png)
+
+For 16777216:
+
+![16777216 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-16777216Size.png)
+![16777216 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-16777216Size.png)
+![16777216 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-16777216Size.png)
+
+for 67108864:
+
+![67108864 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-ReverseInput-67108864Size.png)
+![67108864 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-ReverseInput-67108864Size.png)
+![67108864 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-ReverseInput-67108864Size.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-ReverseInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-ReverseInput.png)
+
+
 ### Quick Sort
 
 ### Bitonic Sort
