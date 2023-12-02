@@ -1068,3 +1068,17 @@ done
 ![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174867022673362944/Screenshot_2023-11-16_at_6.21.59_PM.png?ex=6569272e&is=6556b22e&hm=c7bb920115f750f0bea058ae3fc8eaa4df1d0121b40801ae2ad56ba371886a20&=&width=1832&height=652)
 
 Above is an example our performance metrics. This is similar for all implementations with the same structure as we used the average time for each function.
+
+
+## Analysis
+
+### Merge Sort
+
+
+For the MPI implementation of merge sort, when it comes to the actual computation part of sorting of the code, the time goes down exponentially as you increase the number of processes. This makes sense as that increases the parallelism in the merge sort algorithm and so each of the processes are able to get a part of the data and work on it independently and with more of the processes, more data is getting worked on and it causes the execution of the data to be faster. This can be seen in the strong scaling, but weak scaling really shows the trend as it compares the number of processes and the number of inputs. On one number of inputs, as you increase the amount of threads, the time it takes to compute drops exponentially. In the speed up, it increases as the number of processes increases, further supposing the fact that number of processes increases the speed of sorting the array. The graph for the main and communication varies. In general, the main should also exponentially decrease like the part previously mentioned and the communication should be relatively the same. However that is not necessarily the case. The potential reason for having the communication having this is because there is overhead that is here for the middle section from the synchronization. For the one in main, there is the problem of overhead as well as there were cases where there was an error that was given for one of the cases. Although it ran and had the right output, because of the initial error given and then running, that could have increased the time. For the speed up, both of them spiders out for each of the input but then all of them level out.
+
+For CUDA, the strong scaling was all over the place, the weak scaling was even all the way through and it was the same for the speed up. Unfortunately, this is not what we wanted as the graphs for strong scaling, weakening scaling, and speed up should be like the ones from MPI, where the actual sorting part should decrease time as the number of threads increase and same with weak scaling, and the speedup should increase. Some of the reason behind what could be the problem is that the algorithm implemented is not totally paralyzed and therefore, it creates a problem as it will make the time decrease as the number of threads increase. 
+
+### Comparison
+
+When it comes to the comparison to all the sorting, radix sort came out as the fastest algorithm, with merge sort being second, and bitonic being third. In the graph, you can not see quick sort as the time took so long that it was really hard to see the other 3 sorting algorithms, therefore, we had to change the scale so we can see the other ones. The reason why is that quick sort is not parallelized correctly and runs more sequentially. Radix sorting being the fastest can potentially be because of the fact that the radix sort has a linear time complexity as well as the fact that it does not need to be broken down into subarrays. The reason why merge is faster than bitonic is that merge is O(nlogn) while for bitonic sort, it is O(log^2n) with a large number of elements. 
