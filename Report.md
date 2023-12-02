@@ -464,39 +464,72 @@ Include detailed analysis of computation performance, communication performance.
 
 For 655336:
 
-![65536 main](https://i.imgur.com/jcLdgiD.png)
-![65536 comp_large](https://i.imgur.com/oueRF89.png)
-![65536 comm](https://i.imgur.com/Y0rKtOX.png)
+
 
 For 262144: 
 
-![262144 main](https://i.imgur.com/XvuQNnI.png)
-![262144 comp_large](https://i.imgur.com/OlT1G4B.png)
-![262144 comm](https://i.imgur.com/Xdhr0U4.png)
+
 
 For 1048576:
 
-![1048576 main](https://i.imgur.com/fYWbyAJ.png)
-![1048576 comm](https://i.imgur.com/qlUQKW2.png)
-![1048576 comp_large](https://i.imgur.com/FHwrpvm.png)
+
 
 For 4194304:
 
-![4194304 main](https://i.imgur.com/CS3jV2C.png)
-![4194304 comp_large](https://i.imgur.com/xHTvGfH.png)
-![4194304 comm](https://i.imgur.com/8uyZO6X.png)
+
 
 For 16777216:
 
-![16777216 main](https://i.imgur.com/yImXNPN.png)
-![16777216 comp_large](https://i.imgur.com/CXuM96N.png)
-![16777216 comm](https://i.imgur.com/mAg8ZIi.png)
+
 
 For 67108861:
 
-![67108864 main](https://i.imgur.com/BigUGUa.png)
-![67108864 comp_large](https://i.imgur.com/N9XEID9.png)
-![67108864 comm](https://i.imgur.com/e0NOSii.png)
+
+
+
+
+
+#### CUDA with weak scaling:
+
+For Random:
+
+
+
+For Reverse: 
+
+
+
+For Sorted:
+
+
+
+#### CUDA with speedup:
+
+For Random:
+
+
+
+For Reverse:
+
+
+
+For Sorted:
+
+
+
+
+`
+`
+
+#### MPI with strong scaling:
+
+
+
+
+
+
+
+
 
 ### Radix Sort
 
