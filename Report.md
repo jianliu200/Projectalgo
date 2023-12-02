@@ -555,7 +555,25 @@ For Reverse Input:
 ![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
 
 
+#### Strong Scaling Speedup:
 
+For Random Input:
+
+![Random main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-ReverseInput.png)
 
 ### Quick Sort
 
