@@ -458,7 +458,7 @@ We were unable to gather the required .cali files due to maintenance being perfo
 
 Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
 
-## Mergesort 
+## Mergesort
 
 #### CUDA with strong scaling:
 
@@ -474,13 +474,11 @@ For 262144:
 ![262144 comp_large](https://i.imgur.com/BqNV04O.png)
 ![262144 comm](https://i.imgur.com/YP56LQZ.png)
 
-
 For 1048576:
 
 ![1048576 main](https://i.imgur.com/LMW12lq.png)
 ![1048576 comp large](https://i.imgur.com/JRTcjxI.png)
 ![1048576 comm](https://i.imgur.com/muqCp4p.png)
-
 
 For 4194304:
 
@@ -488,21 +486,17 @@ For 4194304:
 ![4194304 comp large](https://i.imgur.com/Q4yQOeA.png)
 ![4194304 comm](https://i.imgur.com/Ia8oGoF.png)
 
-
 For 16777216:
 
 ![16777216 main](https://i.imgur.com/yydChOq.png)
 ![16777216 comp large](https://i.imgur.com/tMUw1ca.png)
 ![16777216 comm](https://i.imgur.com/LY9o3WP.png)
 
-
 For 67108864:
 
 ![67108864 main](https://i.imgur.com/7dgyTqd.png)
 ![67108864 comp large](https://i.imgur.com/xq36iOM.png)
 ![67108864 comm](https://i.imgur.com/Pprjclx.png)
-
-
 
 #### CUDA with weak scaling:
 
@@ -512,7 +506,7 @@ For Random:
 ![Random comp large](https://i.imgur.com/dFNIE2E.png)
 ![Imgur](https://i.imgur.com/gwKP41I.png)
 
-For Reverse: 
+For Reverse:
 
 ![Imgur](https://i.imgur.com/ROhwwRF.png)
 ![Reverse comp large](https://i.imgur.com/JiHheXc.png)
@@ -523,13 +517,6 @@ For Sorted:
 ![Imgur](https://i.imgur.com/6gex3EN.png)
 ![sorted comp_lage](https://i.imgur.com/pmLuvLH.png)
 ![sorted comm](https://i.imgur.com/fUo3A9I.png)
-
-
-
-
-
-
-
 
 #### CUDA with speedup:
 
@@ -550,8 +537,6 @@ For Sorted:
 ![Sorted main](https://i.imgur.com/dSsAwDR.png)
 ![Sorted comp large](https://i.imgur.com/sP9Cbom.png)
 ![Sorted comm](https://i.imgur.com/1TtxX7w.png)
-
-
 
 `
 `
@@ -600,8 +585,6 @@ For 268435456:
 ![268435456 comp large](https://i.imgur.com/SpeF8Fo.png)
 ![268435456 comm](https://i.imgur.com/IRfYNVk.png)
 
-
-
 #### MPI with weak scaling:
 
 For Random:
@@ -622,9 +605,6 @@ For Sorted:
 ![Sorted comp large](https://i.imgur.com/AjNOutz.png)
 ![Sorted comm](https://i.imgur.com/7870HUz.png)
 
-
-
-
 #### MPI with speedup:
 
 For Random:
@@ -644,19 +624,6 @@ For Sorted:
 ![Sorted main](https://i.imgur.com/eIazqj2.png)
 ![Sorted comp large](https://i.imgur.com/6r6Z3DP.png)
 ![Sorted comm](https://i.imgur.com/Q7WBcRm.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Radix Sort
 
@@ -714,8 +681,7 @@ For Reverse Input:
 ![Reverse comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
 
-
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -795,7 +761,7 @@ For Reverse Input:
 ![Reverse comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-ReverseInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -815,8 +781,96 @@ For Reverse Input:
 ![Reverse comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-ReverseInput.png)
 
-
 ### Quick Sort
+
+### MPI:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-65536Input.png)
+![65536 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-65536Input.png)
+
+For 262144:
+
+![262144 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-262144Input.png)
+![262144 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-262144Input.png)
+
+For 1048576:
+
+![1048576 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-1048576Input.png)
+![1048576 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-1048576Input.png)
+
+For 4194304:
+
+![4194304 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-4194304Input.png)
+![4194304 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-4194304Input.png)
+
+For 16777216:
+
+![16777216 main](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-mainRegion-16777216Input.png)
+![16777216 comm](QuickSort/quickgraphs/MPI/strong/quick-mpi-strong-scaling-commRegion-16777216Input.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-SortedInput.png)
+![Sorted comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-ReverseInput.png)
+![Reverse comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-ReverseInput.png)
+
+#### Speedup:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-SortedInput.png)
+![Sorted comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](QuickSort/quickgraphs/MPI/speedup/quick-mpi-speedup-commRegion-ReverseInput.png)
+
+### CUDA:
+
+#### Strong Scaling:
+
+For 4194304:
+
+![4194304 main](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-mainRegion-4194304Input.png)
+![4194304 comm](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-commRegion-4194304Input.png)
+![4194304 comp](QuickSort/quickgraphs/CUDA/strong/quick-CUDA-strong-scaling-comp_largeRegion-4194304Input.png)
+
+#### Weak Scaling:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-commRegion-RandomInput.png)
+![Random comp](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-comp_largeRegion-RandomInput.png)
+
+#### Speedup:
+
+For Random Input:
+
+![Random main](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-mainRegion-RandomInput.png)
+![Random comm](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-commRegion-RandomInput.png)
+![Random comp](QuickSort/quickgraphs/CUDA/speedup/quick-CUDA-speedup-comp_largeRegion-RandomInput.png)
 
 ## Bitonic Sort
 
@@ -874,8 +928,7 @@ For Reverse Input:
 ![Reverse comm](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-comp_largeRegion-ReverseSortedInput.png)
 
-
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -955,7 +1008,7 @@ For Reverse Input:
 ![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-comp_largeRegion-ReverseSortedInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -974,6 +1027,16 @@ For Reverse Input:
 ![Reverse main](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-mainRegion-ReverseSortedInput.png)
 ![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/speedup/bitonic-cuda-speedup-comp_largeRegion-ReverseSortedInput.png)
+
+## Comparison
+
+### MPI:
+
+![MPI main](/comparison/mpi.png)
+
+### CUDA:
+
+![CUDA main](/comparison/cuda.png)
 
 ## 4a and 4b. Vary the following parameters
 
@@ -1004,3 +1067,27 @@ done
 ![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174867022673362944/Screenshot_2023-11-16_at_6.21.59_PM.png?ex=6569272e&is=6556b22e&hm=c7bb920115f750f0bea058ae3fc8eaa4df1d0121b40801ae2ad56ba371886a20&=&width=1832&height=652)
 
 Above is an example our performance metrics. This is similar for all implementations with the same structure as we used the average time for each function.
+
+## Analysis
+
+### Merge Sort
+
+For the MPI implementation of merge sort, when it comes to the actual computation part of sorting of the code, the time goes down exponentially as you increase the number of processes. This makes sense as that increases the parallelism in the merge sort algorithm and so each of the processes are able to get a part of the data and work on it independently and with more of the processes, more data is getting worked on and it causes the execution of the data to be faster. This can be seen in the strong scaling, but weak scaling really shows the trend as it compares the number of processes and the number of inputs. On one number of inputs, as you increase the amount of threads, the time it takes to compute drops exponentially. In the speed up, it increases as the number of processes increases, further supposing the fact that number of processes increases the speed of sorting the array. The graph for the main and communication varies. In general, the main should also exponentially decrease like the part previously mentioned and the communication should be relatively the same. However that is not necessarily the case. The potential reason for having the communication having this is because there is overhead that is here for the middle section from the synchronization. For the one in main, there is the problem of overhead as well as there were cases where there was an error that was given for one of the cases. Although it ran and had the right output, because of the initial error given and then running, that could have increased the time. For the speed up, both of them spiders out for each of the input but then all of them level out.
+
+For CUDA, the strong scaling was all over the place, the weak scaling was even all the way through and it was the same for the speed up. Unfortunately, this is not what we wanted as the graphs for strong scaling, weakening scaling, and speed up should be like the ones from MPI, where the actual sorting part should decrease time as the number of threads increase and same with weak scaling, and the speedup should increase. Some of the reason behind what could be the problem is that the algorithm implemented is not totally paralyzed and therefore, it creates a problem as it will make the time decrease as the number of threads increase.
+
+### Quick Sort
+
+The sequential implementation for quick sort works by taking in the input array and splitting it up into smaller buckets. These buckets are then sorted around a pivot point and merged back up until the whole array is sorted.
+
+Quick sort is a sequential algorithm but it is still possible to make this algorithm parallel. The way this was done was similar for both the CUDA implementation and the MPI implementation. For the CUDA, the input array is partitioned into different portions based on their index. These different portions are assigned a thread that will sort the portion and combine it back with the main input array. The algorithm dynamically divides the input array into smaller subarrays and coordinates the sorting process among threads. The way quick sort MPI is parallelized is similar to how CUDA parallelized. The input array is partitioned into different portions and these portions are assigned different processes that will run and sort the portion. Once the portion is sorted, it is combined back with the main input array and this cycle repeats until the array is sorted. This is parallelized because all these processes run concurrently and sort each portion at the same time.
+
+When graphing the implemented code, we realized there were some implementation errors as the graphs didn’t really look parallel. For CUDA, it was hanging when running the jobs and this could be because of a synchronization error. Another reason could be because of an incorrect Kernel Configuration. One of these reasons causes some of the grace jobs to take a long time or run infinitely, which is why the graphs look like straight lines since there isn’t much data to work with. For MPI, we also ran into some errors as the plots don’t look like one for an accurate parallel algorithm. We suspect that there may be some communication overhead occuring, which is why overall there was an increase in time as processes increased.
+
+Let’s start by looking at the MPI graphs. When analyzing the strong scaling graphs for quick sort, we see a general trend of an increase in time as the processes are added. This is the case for all input sizes. It seems overall that random takes the most time out of the three input arrays we had in general. Random is closely followed by sorted for the most time and it seems that in most cases, reverse takes the least amount of time. For the weak scaling graphs, we see this same trend where more processes results in more time taken. We also see that the arrays with the more elements have the highest average time and are always taking more time to sort than ones with less elements. This is the case for random, sorted, and reverse inputs. This pattern is reflected in the speedup graphs as we see an overall decrease in the ratio for the speedup as the number of processes increases. We also see that the arrays with more elements end with more speed up than the ones with less elements.
+
+Now let's take a look at the CUDA graphs. Starting with the strong scaling graphs, we see an increase in time for the algorithm as the number of processes increases. This is the case for all the input types. For the weak scaling, we see the same pattern of an increase in time as the number of processes increases. This is for the random input arrays. For our speedup graphs for quick sort, we see that the ratio for speedup decreases with more processes for random input arrays. As mentioned earlier, there was an implementation error for this code, which is why it doesn’t accurately represent a quick sort CUDA algorithm.
+
+### Comparison
+
+When it comes to the comparison to all the sorting, radix sort came out as the fastest algorithm, with merge sort being second, and bitonic being third. In the graph, you can not see quick sort as the time took so long that it was really hard to see the other 3 sorting algorithms, therefore, we had to change the scale so we can see the other ones. The reason why is that quick sort is not parallelized correctly and runs more sequentially. Radix sorting being the fastest can potentially be because of the fact that the radix sort has a linear time complexity as well as the fact that it does not need to be broken down into subarrays. The reason why merge is faster than bitonic is that merge is O(nlogn) while for bitonic sort, it is O(log^2n) with a large number of elements.
