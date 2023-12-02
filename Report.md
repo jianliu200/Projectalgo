@@ -672,15 +672,15 @@ For 655336:
 
 For 262144:
 
-![262144 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-RandomInput-2^18_numvals.png)
-![262144 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-RandomInput-2^18_numvals.png)
-![262144 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-RandomInput-2^18_numvals.png)
+![262144 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-SortedInput-2^18_numvals.png)
+![262144 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-SortedInput-2^18_numvals.png)
+![262144 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-SortedInput-2^18_numvals.png)
 
 For 1048576:
 
-![1048576 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-SortedInput-2^20_numvals.png)
-![1048576 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-SortedInput-2^20_numvals.png)
-![1048576 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-SortedInput-2^20_numvals.png)
+![1048576 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-ReverseSortedInput-2^20_numvals.png)
+![1048576 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-ReverseSortedInput-2^20_numvals.png)
+![1048576 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-ReverseSortedInput-2^20_numvals.png)
 
 For 4194304:
 
@@ -690,9 +690,9 @@ For 4194304:
 
 For 16777216:
 
-![16777216 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-ReverseInput-2^26_numvals.png)
-![16777216 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-ReverseInput-2^26_numvals.png)
-![16777216 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-ReverseInput-2^26_numvals.png)
+![16777216 main](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-mainRegion-RandomInput-2^26_numvals.png)
+![16777216 comm](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-commRegion-RandomInput-2^26_numvals.png)
+![16777216 comp](/Bitonic%20Sort/MPI/plots_mpi/strong/bitonic-mpi-strong-comp_largeRegion-RandomInput-2^26_numvals.png)
 
 #### Weak Scaling:
 
