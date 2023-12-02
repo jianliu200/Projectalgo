@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
     //float s = GetTickCount();
 
     // 初始化数列
-    int size = atoi(argv[1]);//1024 * 1024;
+    int size = atoi(argv[2]);//1024 * 1024;
     int *nums = (int*)malloc(sizeof(int) * size);
     srand(time(0));
 
@@ -92,11 +92,11 @@ int main(int argc, char** argv) {
     cudaMalloc((void**)&dTemp, sizeof(int) * size);
     CALI_MARK_END(comm_large);
     CALI_MARK_END(comm);
-    int threadsize = atoi(argv[2]);
+    int threadsize = atoi(argv[1]);
     printf("The size of the input is %d\n", size);
     printf("The number of threads is %d\n", threadsize);
 
-    dim3 threadPerBlock(atoi(argv[2]));//it is 1024
+    dim3 threadPerBlock(atoi(argv[1]));//it is 1024
     dim3 blockNum((size + threadPerBlock.x - 1) / threadPerBlock.x, 1, 1);
     
     float blocknum = (size + threadsize - 1) / threadsize;

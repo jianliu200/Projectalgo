@@ -458,69 +458,53 @@ We were unable to gather the required .cali files due to maintenance being perfo
 
 Include detailed analysis of computation performance, communication performance. Include figures and explanation of your analysis.
 
-Bitonic MPI Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376130011186/mpi-bitonic-sorted.png?ex=65690e5d&is=6556995d&hm=a1e5d2ae2cda119a6426f1d2daf91251f6fa47afe04c55f4cf74523f1edc4a69&=&width=1328&height=834)
+### Mergesort 
 
-Bitonic MPI Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376364912710/mpi-bitonic-reverse.png?ex=65690e5d&is=6556995d&hm=69272097ee57666d467a59b3cfef1818ac83ac6675e252906ba72a28f3b249d1&=&width=1436&height=828)
+#### CUDA with strong scaling:
 
-Bitonic MPI Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376591401050/mpi-bitonic-random.png?ex=65690e5d&is=6556995d&hm=b47941dafdde81a07f4ef0b946e14d8d4b4a04f06b3191829c582de718e8156f&=&width=1350&height=852)
+For 655336:
 
-Bitonic CUDA Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840376851431574/cuda-bitonic-sorted.png?ex=65690e5d&is=6556995d&hm=53596ea7baba02ee4e19813eb95eb3dce85efa777ee459e46a7f9ed2f0bb3700&=&width=1352&height=842)
+![65536 main](https://i.imgur.com/jcLdgiD.png)
+![65536 comp_large](https://i.imgur.com/oueRF89.png)
+![65536 comm](https://i.imgur.com/Y0rKtOX.png)
 
-Bitonic CUDA Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840377107304559/cuda-bitonic-reverse.png?ex=65690e5d&is=6556995d&hm=44ad4426fdd0c6977f8a27a054becf4fdbbac47e4a2e11fca29ee3f5a8b3e429&=&width=1526&height=830)
+For 262144: 
 
-Bitonic CUDA Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174840377396707338/cuda-bitonic-random.png?ex=65690e5d&is=6556995d&hm=579f022d5d7983197fd4bdf3c4e228da12bfac14de1934da9cff4ad43bcd0e4b&=&width=1454&height=854)
+![262144 main](https://i.imgur.com/XvuQNnI.png)
+![262144 comp_large](https://i.imgur.com/OlT1G4B.png)
+![262144 comm](https://i.imgur.com/Xdhr0U4.png)
 
-Radix MPI Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873515925716992/sorted.png?ex=65692d3a&is=6556b83a&hm=03f0e8af8293af5db24d5b91d6c193e604538101e724c13d7203c5504d94e212&=&width=866&height=558)
+For 1048576:
 
-Radix MPI Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873516147998730/reverse.png?ex=65692d3a&is=6556b83a&hm=e5c1cf168c7f8e567d48f0e9474a670da704bc49407d3e83730e5a27a0d76c83&=&width=882&height=560)
+![1048576 main](https://i.imgur.com/fYWbyAJ.png)
+![1048576 comm](https://i.imgur.com/qlUQKW2.png)
+![1048576 comp_large](https://i.imgur.com/FHwrpvm.png)
 
-Radix MPI Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174873515439173632/random.png?ex=65692d3a&is=6556b83a&hm=77da49d67c7448013385236067f047e7e1a2d340509790885010c7580c0213d0&=&width=910&height=572)
+For 4194304:
 
-Radix CUDA Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833913512857662/Screenshot_2023-11-16_at_4.10.08_PM.png?ex=65690858&is=65569358&hm=539eb011574d70b4280f64b52bf4a529f7180d89e78f0610ae3ae43ccec4b463&=&width=894&height=552)
+![4194304 main](https://i.imgur.com/CS3jV2C.png)
+![4194304 comp_large](https://i.imgur.com/xHTvGfH.png)
+![4194304 comm](https://i.imgur.com/8uyZO6X.png)
 
-Radix CUDA Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833912984387644/Screenshot_2023-11-16_at_4.08.22_PM.png?ex=65690858&is=65569358&hm=11e7663ea4c41c4f11a4de9a2f08290de59a30d7c5c86389e67362fa7b593d9b&=&width=910&height=564)
+For 16777216:
 
-Radix CUDA Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174833913273798778/Screenshot_2023-11-16_at_4.09.18_PM.png?ex=65690858&is=65569358&hm=a1bd260c5940e5a9debe709c69a68f05c0046425f9493b9563da80bbcf94d84e&=&width=910&height=560)
+![16777216 main](https://i.imgur.com/yImXNPN.png)
+![16777216 comp_large](https://i.imgur.com/CXuM96N.png)
+![16777216 comm](https://i.imgur.com/mAg8ZIi.png)
 
-Merge MPI Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785541533796/MPI_sorted_merge_sort.png?ex=65692e68&is=6556b968&hm=3c8d491772b87ff3f4841893f32f441337dd39b4c88c1fd15af52961a593792e&=&width=1154&height=706)
+For 67108861:
 
-Merge MPI Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785294073856/MPI_reverse_merge_sort.png?ex=65692e68&is=6556b968&hm=c517640aa1582651d2751b20cac115e4c82e52293ddf7f6c6d711583d2fba5a5&=&width=1146&height=686)
+![67108864 main](https://i.imgur.com/BigUGUa.png)
+![67108864 comp_large](https://i.imgur.com/N9XEID9.png)
+![67108864 comm](https://i.imgur.com/e0NOSii.png)
 
-Merge MPI Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874785063374908/MPI_random_merge_sort.png?ex=65692e68&is=6556b968&hm=3111687f01c00bfaf18a50a4c976881bf1850ee9f25a5f3611516be99259d5c7&=&width=1124&height=692)
+### Radix Sort
 
-Merge CUDA Sorted:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784815919124/CUDA_sorted_merge_sort.png?ex=65692e68&is=6556b968&hm=4d8afac57574e3184defb15695db3352b3cb4fff47b77dc29de811f474d879d8&=&width=1144&height=704)
+### Quick Sort
 
-Merge CUDA Reverse:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784585236562/CUDA_reverse_merge_sort.png?ex=65692e68&is=6556b968&hm=606a3a6b106cdd2789a4cf5c5f470074aa050c336682a217b7778e121e18a701&=&width=1156&height=682)
+### Bitonic Sort
 
-Merge CUDA Random:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174874784149016586/CUDA_random_merge_sort.png?ex=65692e68&is=6556b968&hm=444725e4353f3f7b24e0185929c92f4157a6b2e6cff3dc0aa5576e86cf0c510b&=&width=1192&height=694)
 
-Quick MPI:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174872867226263673/image.png?ex=65692c9f&is=6556b79f&hm=6ebc2490823c0ec2f279776d2650fd3cfcae70a7179ee3c5b96bc20efcb126ac&=&width=1050&height=704)
-
-Quick CUDA:
-![Image Alt Text](https://media.discordapp.net/attachments/1166861153872384011/1174871784831590491/image.png?ex=65692b9d&is=6556b69d&hm=78e309c8a4a600adb2151d46f26a63177254d5084e40f0f1a4c2ad71b07fb986&=&width=1100&height=702)
-
-When looking at the graphs above, we see that as we increase the number of processes, we see a significant decrease in the amount of time it takes for the algorithm to complete for MPI codes, in general. We see this same pattern occuring within our CUDA files because when we increase the number of threads used for each algorithm, we observe a noticable decrease in the time taken for the algorithm to sort the numbers.
-
-We wanted to ensure that this was the case for all types of arrays, so we decided to run all algorithms on a randomly generated array, reverse sorted array, and a sorted array. When running our algorithm on these types of input arrays, we saw that the pattern we noticed before was upheld and stayed true throughout.
 
 ## 4a and 4b. Vary the following parameters
 
