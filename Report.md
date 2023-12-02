@@ -575,6 +575,21 @@ For Reverse Input:
 ![Reverse comm](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/MPI%20Pics/speedup/radix-mpi-speedup-comp_largeRegion-ReverseInput.png)
 
+### CUDA:
+
+#### Strong Scaling:
+
+For 655336:
+
+![65536 main](/Radix/CUDA%20Pics/strong/radix-cuda-strong-mainRegion-SortedInput-65536Size.png)
+![65536 comm](/Radix/CUDA%20Pics/strong/radix-cuda-strong-commRegion-SortedInput-65536Size.png)
+![65536 comp](/Radix/CUDA%20Pics/strong/radix-cuda-strong-comp_largeRegion-SortedInput-65536Size.png)
+
+For 262144:
+
+
+
+
 ### Quick Sort
 
 ### Bitonic Sort
