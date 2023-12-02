@@ -617,6 +617,44 @@ for 67108864:
 
 #### Weak Scaling:
 
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/weak/radix-cuda-weak-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-ReverseInput.png)
+
+#### Strong Scaling Speedup:
+
+For Random Input:
+
+![Random main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-RandomInput.png)
+![Random comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-RandomInput.png)
+![Random comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-RandomInput.png)
+
+For Sorted Input:
+
+![Sorted main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-SortedInput.png)
+![Sorted comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-SortedInput.png)
+![Sorted comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-SortedInput.png)
+
+For Reverse Input:
+
+![Reverse main](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-mainRegion-ReverseInput.png)
+![Reverse comm](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-commRegion-ReverseInput.png)
+![Reverse comp](/Radix/CUDA%20Pics/speedup/radix-cuda-speedup-comp_largeRegion-ReverseInput.png)
+
 
 ### Quick Sort
 
