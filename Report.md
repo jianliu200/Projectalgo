@@ -515,7 +515,19 @@ For 262144:
 ![262144 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-262144Size.png)
 
 For 1048576:
-![1048576 main](/Radix/MPI%20Pics/strong/
+![1048576 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-SortedInput-1048576Size.png)
+![1048576 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-SortedInput-1048576Size.png)
+![1048576 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-SortedInput-1048576Size.png)
+
+For 4194304:
+![4194304 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-RandomInput-4194304Size.png)
+![4194304 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-RandomInput-4194304Size.png)
+![4194304 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-RandomInput-4194304Size.png)
+
+For 16777216:
+![16777216 main](/Radix/MPI%20Pics/strong/radix-mpi-strong-mainRegion-ReverseInput-67108864Size.png)
+![16777216 comm](/Radix/MPI%20Pics/strong/radix-mpi-strong-commRegion-ReverseInput-67108864Size.png)
+![16777216 comp](/Radix/MPI%20Pics/strong/radix-mpi-strong-comp_largeRegion-ReverseInput-67108864Size.png)
 
 
 ### Quick Sort
