@@ -681,7 +681,7 @@ For Reverse Input:
 ![Reverse comm](/Radix/MPI%20Pics/weak/radix-mpi-weak-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/MPI%20Pics/weak/radix-mpi-weak-comp_largeRegion-ReverseInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -761,7 +761,7 @@ For Reverse Input:
 ![Reverse comm](/Radix/CUDA%20Pics/weak/radix-cuda-weak-commRegion-ReverseInput.png)
 ![Reverse comp](/Radix/CUDA%20Pics/weak/radix-cuda-weak-comp_largeRegion-ReverseInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -829,7 +829,7 @@ For Reverse Input:
 ![Reverse main](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-mainRegion-ReverseInput.png)
 ![Reverse comm](QuickSort/quickgraphs/MPI/weak/quick-mpi-weak-scaling-commRegion-ReverseInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -864,7 +864,7 @@ For Random Input:
 ![Random comm](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-commRegion-RandomInput.png)
 ![Random comp](QuickSort/quickgraphs/CUDA/weak/quick-CUDA-weak-scaling-comp_largeRegion-RandomInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -928,7 +928,7 @@ For Reverse Input:
 ![Reverse comm](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/MPI/plots_mpi/weak/bitonic-mpi-weak-comp_largeRegion-ReverseSortedInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
@@ -1008,7 +1008,7 @@ For Reverse Input:
 ![Reverse comm](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-commRegion-ReverseSortedInput.png)
 ![Reverse comp](/Bitonic%20Sort/CUDA/plots_cuda/weak/bitonic-cuda-weak-comp_largeRegion-ReverseSortedInput.png)
 
-#### Strong Scaling Speedup:
+#### Speedup:
 
 For Random Input:
 
